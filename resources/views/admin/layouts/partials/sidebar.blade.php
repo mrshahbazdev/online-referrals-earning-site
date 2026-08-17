@@ -16,6 +16,7 @@
         <li><a href="{{ route('admin.withdrawals.index') }}" class="{{ request()->routeIs('admin.withdrawals.*') ? 'active' : '' }}"><i class="ph ph-arrow-circle-down"></i> Withdrawal Requests</a></li>
         <li><a href="{{ route('admin.deposit-methods.index') }}" class="{{ request()->routeIs('admin.deposit-methods.*') ? 'active' : '' }}"><i class="ph ph-bank"></i> Deposit Methods</a></li>
         <li><a href="{{ route('admin.announcements.index') }}" class="{{ request()->routeIs('admin.announcements.*') ? 'active' : '' }}"><i class="ph ph-megaphone"></i> Announcements</a></li>
+        <li><a href="{{ route('admin.support.index') }}" class="{{ request()->routeIs('admin.support.*') ? 'active' : '' }}"><i class="ph ph-chat-circle-dots"></i> Support Chats</a></li>
         <li><a href="{{ route('admin.admins.index') }}" class="{{ request()->routeIs('admin.admins.*') ? 'active' : '' }}"><i class="ph ph-user-gear"></i> Admin Management</a></li>
         <li><a href="{{ route('admin.activity_logs.index') }}" class="{{ request()->routeIs('admin.activity_logs.*') ? 'active' : '' }}"><i class="ph ph-list-dashes"></i> Admin Log</a></li>
         <li><a href="{{ route('admin.user_activity.index') }}" class="{{ request()->routeIs('admin.user_activity.*') ? 'active' : '' }}"><i class="ph ph-user-list"></i> User Log</a></li>

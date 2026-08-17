@@ -30,6 +30,8 @@ use App\Http\Controllers\Admin\DepositSettingController;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Admin\DepositMethodController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\SupportController as AdminSupportController;
+use App\Http\Controllers\User\SupportController;
 use App\Http\Middleware\CheckScriptActivation;
 // --- Public Routes ---
 // These routes can be accessed by anyone.
@@ -66,6 +68,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return view('pages.app-download');
     })->name('app.download');
 
+    Route::get('/support', [SupportController::class, 'index'])->name('support.index');
+    Route::post('/support', [SupportController::class, 'store'])->name('support.store');
+
 });
 
 
@@ -101,6 +106,10 @@ Route::middleware(['auth:admin', 'is_admin'])->prefix('admin')->name('admin.')->
     Route::resource('/deposit-methods', DepositMethodController::class)->except(['show']);
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [SettingController::class, 'store'])->name('settings.store');
+
+    Route::get('/support', [AdminSupportController::class, 'index'])->name('support.index');
+    Route::get('/support/{user}', [AdminSupportController::class, 'show'])->name('support.show');
+    Route::post('/support/{user}/reply', [AdminSupportController::class, 'reply'])->name('support.reply');
 });
 
 

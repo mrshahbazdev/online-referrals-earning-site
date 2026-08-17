@@ -60,6 +60,12 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Transaction::class);
     }
+
+    // User ki support chat messages
+    public function supportMessages()
+    {
+        return $this->hasMany(SupportMessage::class);
+    }
     public function isEligibleForWithdrawal(): bool
     {
         // Check karein ke KYC approved hai
