@@ -23,6 +23,12 @@
     }
     .chat-header-info { display: flex; align-items: center; gap: 0.6rem; }
     .chat-header-title { font-weight: 700; font-size: 0.95rem; }
+    .chat-header-actions { display: flex; align-items: center; gap: 0.5rem; }
+    .chat-header-actions a {
+        color: #facc15; text-decoration: none; display: flex; align-items: center; justify-content: center;
+        width: 34px; height: 34px; border-radius: 50%; background: #1E1F2B; border: 1px solid #334155;
+    }
+    .chat-header-actions a:hover { background: #334155; }
     .online-dot {
         width: 8px; height: 8px; background: #22c55e; border-radius: 50%;
         box-shadow: 0 0 0 2px #1E1F2B;
@@ -140,7 +146,25 @@
                         <div class="chat-status">Admin is online</div>
                     </div>
                 </div>
-                <i class="ph ph-headset text-xl text-yellow-400"></i>
+                <div class="chat-header-actions">
+                    @if(!empty($settings['support_telegram']))
+                        @php
+                            $telegram = $settings['support_telegram'];
+                            $telegramLink = str_starts_with($telegram, 'http') ? $telegram : 'https://t.me/' . ltrim($telegram, '@');
+                        @endphp
+                        <a href="{{ $telegramLink }}" target="_blank" title="Telegram"><i class="ph ph-telegram-logo text-xl"></i></a>
+                    @endif
+                    @if(!empty($settings['support_imo']))
+                        @php
+                            $imo = $settings['support_imo'];
+                            $imoLink = str_starts_with($imo, 'http') ? $imo : 'https://imo.im/' . ltrim($imo, '+');
+                        @endphp
+                        <a href="{{ $imoLink }}" target="_blank" title="IMO"><i class="ph ph-chat-circle text-xl"></i></a>
+                    @endif
+                    @if(empty($settings['support_telegram']) && empty($settings['support_imo']))
+                        <i class="ph ph-headset text-xl text-yellow-400"></i>
+                    @endif
+                </div>
             </div>
 
             <div class="chat-messages" id="chatMessages"
