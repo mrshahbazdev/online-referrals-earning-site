@@ -70,6 +70,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/support', [SupportController::class, 'index'])->name('support.index');
     Route::post('/support', [SupportController::class, 'store'])->name('support.store');
+    Route::get('/support/messages', [SupportController::class, 'messages'])->name('support.messages');
 
 });
 
@@ -109,6 +110,7 @@ Route::middleware(['auth:admin', 'is_admin'])->prefix('admin')->name('admin.')->
 
     Route::get('/support', [AdminSupportController::class, 'index'])->name('support.index');
     Route::get('/support/{user}', [AdminSupportController::class, 'show'])->name('support.show');
+    Route::get('/support/{user}/messages', [AdminSupportController::class, 'messages'])->name('support.messages');
     Route::post('/support/{user}/reply', [AdminSupportController::class, 'reply'])->name('support.reply');
 });
 
