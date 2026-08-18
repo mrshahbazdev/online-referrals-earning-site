@@ -44,14 +44,16 @@ class UserWithdrawalController extends Controller
         
         // Referral requirement check
         $referralRequirementMet = true;
-        if ($lastWithdrawal && !$user->bypass_referral_requirement) {
+        $referralsRequired = $user->referrals_required_for_withdrawal ?? 1;
+        
+        if ($lastWithdrawal && !$user->bypass_referral_requirement && $referralsRequired > 0) {
             // Check if user has referred someone who is KYC approved AFTER the last withdrawal
             $newVerifiedReferrals = User::where('referred_by_id', $user->id)
                 ->where('kyc_status', 'approved')
                 ->where('created_at', '>', $lastWithdrawal->created_at)
                 ->count();
                 
-            if ($newVerifiedReferrals < 1) {
+            if ($newVerifiedReferrals < $referralsRequired) {
                 $referralRequirementMet = false;
             }
         }
@@ -66,7 +68,7 @@ class UserWithdrawalController extends Controller
             $maxWithdrawal = $user->balance; // Treat 0 as unlimited
         }
 
-        return view('withdrawals.create', compact('user', 'isEligible', 'lastWithdrawal', 'canWithdraw', 'nextAvailableDate', 'maxWithdrawal', 'referralRequirementMet'));
+        return view('withdrawals.create', compact('user', 'isEligible', 'lastWithdrawal', 'canWithdraw', 'nextAvailableDate', 'maxWithdrawal', 'referralRequirementMet', 'referralsRequired'));
     }
 
     /**
@@ -94,14 +96,17 @@ class UserWithdrawalController extends Controller
             }
             
             // Referral Requirement
-            if (!$user->bypass_referral_requirement) {
+            $referralsRequired = $user->referrals_required_for_withdrawal ?? 1;
+            
+            if (!$user->bypass_referral_requirement && $referralsRequired > 0) {
                 $newVerifiedReferrals = User::where('referred_by_id', $user->id)
                     ->where('kyc_status', 'approved')
                     ->where('created_at', '>', $lastWithdrawal->created_at)
                     ->count();
                     
-                if ($newVerifiedReferrals < 1) {
-                    return back()->with('error', 'You must refer at least 1 new user (with verified KYC) after your last withdrawal to withdraw again.');
+                if ($newVerifiedReferrals < $referralsRequired) {
+                    $usersText = $referralsRequired == 1 ? '1 new user' : $referralsRequired . ' new users';
+                    return back()->with('error', 'You must refer at least ' . $usersText . ' (with verified KYC) after your last withdrawal to withdraw again.');
                 }
             }
         }

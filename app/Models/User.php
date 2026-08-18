@@ -28,6 +28,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'withdrawal_limit_override',
         'withdrawal_days_override',
         'bypass_referral_requirement',
+        'referrals_required_for_withdrawal',
         'kyc_status',
         'role',
     ];

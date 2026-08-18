@@ -96,12 +96,13 @@ class UserManagementController extends Controller
             'withdrawal_limit_override' => ['nullable', 'numeric', 'min:0'],
             'withdrawal_days_override' => ['nullable', 'integer', 'min:0'],
             'bypass_referral_requirement' => ['nullable', 'boolean'],
+            'referrals_required_for_withdrawal' => ['required', 'integer', 'min:0'],
         ]);
 
         $data = $request->only([
             'username', 'email', 'level_id', 'balance',
             'first_name', 'last_name', 'mobile_number', 'address', 'kyc_status',
-            'withdrawal_limit_override', 'withdrawal_days_override'
+            'withdrawal_limit_override', 'withdrawal_days_override', 'referrals_required_for_withdrawal'
         ]);
         
         $data['bypass_referral_requirement'] = $request->has('bypass_referral_requirement');

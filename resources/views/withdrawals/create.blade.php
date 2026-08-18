@@ -29,7 +29,7 @@
             @elseif(!$referralRequirementMet)
                 <div class="bg-yellow-500/10 text-yellow-300 p-6 rounded-lg text-center space-y-2">
                     <h3 class="font-bold text-lg">Referral Requirement</h3>
-                    <p class="text-sm">To make your next withdrawal, you must refer at least <strong>1 new user</strong> who completes their KYC verification.</p>
+                    <p class="text-sm">To make your next withdrawal, you must refer at least <strong>{{ $referralsRequired }} new {{ Str::plural('user', $referralsRequired) }}</strong> who completes their KYC verification.</p>
                     <p class="text-xs text-gray-400 mt-2">The user must register using your referral link and have their KYC approved after your last withdrawal.</p>
                     <div class="mt-4">
                         <a href="{{ route('team.index') }}" class="bg-yellow-400 text-black font-bold py-2 px-4 rounded-lg inline-block text-sm">Go to Referral Page</a>
