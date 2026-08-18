@@ -105,7 +105,7 @@ class SupportController extends Controller
             'id' => $message->id,
             'sender' => $message->sender,
             'message' => $message->message,
-            'image_url' => $message->image_path ? asset('uploads/' . $message->image_path) : null,
+            'image_url' => $message->image_path ? asset('public/uploads/' . $message->image_path) : null,
             'is_read' => $message->is_read,
             'time' => $message->created_at->format('h:i A'),
             'date' => $message->created_at->isToday()
@@ -115,4 +115,5 @@ class SupportController extends Controller
         ];
     }
 }
+
 

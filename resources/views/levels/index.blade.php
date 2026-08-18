@@ -25,7 +25,7 @@
                 <div class="bg-[#1E1F2B] p-4 rounded-lg border-2 {{ $user->level_id == $level->id ? 'border-yellow-400' : 'border-transparent' }}">
                     <div class="flex items-center gap-4">
                         @if($level->icon_url)
-                            <img src="{{ asset('uploads/' . $level->icon_url) }}" alt="{{ $level->name }}" class="w-16 h-16 rounded-full object-cover">
+                            <img src="{{ asset('public/uploads/' . $level->icon_url) }}" alt="{{ $level->name }}" class="w-16 h-16 rounded-full object-cover">
                         @endif
                         <div class="flex-grow">
                             <h3 class="font-bold text-lg text-white">{{ $level->name }}</h3>
@@ -50,4 +50,5 @@
         </div>
     </div>
 @endsection
+
 

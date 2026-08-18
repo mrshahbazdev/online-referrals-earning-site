@@ -76,7 +76,7 @@
                         <td>{{ Str::limit($method->address, 20) }}</td>
                         <td>
                             @if($method->qr_code_url)
-                                <img src="{{ asset('uploads/' . $method->qr_code_url) }}" alt="QR" class="qr-code-img">
+                                <img src="{{ asset('public/uploads/' . $method->qr_code_url) }}" alt="QR" class="qr-code-img">
                             @endif
                         </td>
                         <td>
@@ -187,4 +187,5 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 @endpush
+
 

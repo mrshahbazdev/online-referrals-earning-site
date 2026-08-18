@@ -58,7 +58,7 @@
                                 <td data-label="User">{{ $request->user->username ?? 'N/A' }}</td>
                                 <td data-label="Amount">${{ number_format($request->amount, 2) }}</td>
                                 <td data-label="Transaction Proof">
-                                    <a href="{{ asset('uploads/' . $request->transaction_id_image_url) }}" target="_blank" style="color: var(--accent-color);">View Proof</a>
+                                    <a href="{{ asset('public/uploads/' . $request->transaction_id_image_url) }}" target="_blank" style="color: var(--accent-color);">View Proof</a>
                                 </td>
                                 <td data-label="Date">{{ $request->created_at->format('d M, Y') }}</td>
                                 <td data-label="Status">
@@ -96,4 +96,5 @@
         </main>
     </div>
     @endsection
+
 

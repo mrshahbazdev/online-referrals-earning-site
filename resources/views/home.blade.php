@@ -7,7 +7,7 @@
         <!-- Profile Header -->
         <div class="flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <img src="{{ $user->profile_image_url ? asset('uploads/' . $user->profile_image_url) : 'https://placehold.co/64x64/fbbF24/10111A?text=' . strtoupper(substr($user->username, 0, 1)) }}" alt="Profile Picture" class="w-16 h-16 rounded-full border-2 border-yellow-400 object-cover">
+                <img src="{{ $user->profile_image_url ? asset('public/uploads/' . $user->profile_image_url) : 'https://placehold.co/64x64/fbbF24/10111A?text=' . strtoupper(substr($user->username, 0, 1)) }}" alt="Profile Picture" class="w-16 h-16 rounded-full border-2 border-yellow-400 object-cover">
                 <span class="font-semibold text-lg">{{ $user->username }}</span>
             </div>
             <div class="text-center">
@@ -70,4 +70,5 @@
         </div>
     </div>
 @endsection
+
 

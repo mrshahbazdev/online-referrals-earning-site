@@ -36,7 +36,7 @@
                 <!-- Method Details -->
                 @foreach($depositMethods as $method)
                     <div id="method-{{ $method->id }}" class="method-details hidden bg-[#1E1F2B] p-6 rounded-lg text-center space-y-4">
-                        <img src="{{ asset('uploads/' . $method->qr_code_url) }}" alt="QR Code" class="w-48 h-48 mx-auto rounded-lg bg-white p-1">
+                        <img src="{{ asset('public/uploads/' . $method->qr_code_url) }}" alt="QR Code" class="w-48 h-48 mx-auto rounded-lg bg-white p-1">
                         <div>
                             <p class="text-sm text-gray-400">Network</p>
                             <p class="font-semibold">{{ $method->network }}</p>
@@ -105,4 +105,5 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 @endpush
+
 

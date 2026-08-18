@@ -48,9 +48,9 @@
                                 <td data-label="Full Name">{{ $submission->full_name }}</td>
                                 <td data-label="ID Number">{{ $submission->id_card_number }}</td>
                                 <td data-label="Documents">
-                                    <a href="{{ asset('uploads/' . $submission->id_card_front_url) }}" target="_blank">Front</a> |
-                                    <a href="{{ asset('uploads/' . $submission->id_card_back_url) }}" target="_blank">Back</a> |
-                                    <a href="{{ asset('uploads/' . $submission->face_image_url) }}" target="_blank">Face</a>
+                                    <a href="{{ asset('public/uploads/' . $submission->id_card_front_url) }}" target="_blank">Front</a> |
+                                    <a href="{{ asset('public/uploads/' . $submission->id_card_back_url) }}" target="_blank">Back</a> |
+                                    <a href="{{ asset('public/uploads/' . $submission->face_image_url) }}" target="_blank">Face</a>
                                 </td>
                                 <td data-label="Status">
                                     <span class="status-badge status-{{ $submission->status }}">{{ $submission->status }}</span>
@@ -86,4 +86,5 @@
         </main>
     </div>
 @endsection
+
 
