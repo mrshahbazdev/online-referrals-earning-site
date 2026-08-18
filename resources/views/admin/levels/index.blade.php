@@ -188,6 +188,14 @@
                     <label for="weekly_withdrawal_limit">Weekly Withdrawal Limit ($)</label>
                     <input type="number" step="0.01" id="weekly_withdrawal_limit" name="weekly_withdrawal_limit" required>
                 </div>
+                <div class="form-group">
+                    <label for="withdrawal_days">Withdrawal Cooldown Days</label>
+                    <input type="number" id="withdrawal_days" name="withdrawal_days" required value="7">
+                </div>
+                <div class="form-group">
+                    <label for="referrals_required_for_withdrawal">Referrals Required per Withdrawal</label>
+                    <input type="number" id="referrals_required_for_withdrawal" name="referrals_required_for_withdrawal" required value="1">
+                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn-secondary close-modal-btn">Cancel</button>
                     <button type="submit" class="btn-primary">Save Level</button>
@@ -259,6 +267,8 @@
                     document.getElementById('upgrade_cost').value = level.upgrade_cost;
                     document.getElementById('daily_task_limit').value = level.daily_task_limit;
                     document.getElementById('weekly_withdrawal_limit').value = level.weekly_withdrawal_limit;
+                    document.getElementById('withdrawal_days').value = level.withdrawal_days !== undefined ? level.withdrawal_days : 7;
+                    document.getElementById('referrals_required_for_withdrawal').value = level.referrals_required_for_withdrawal !== undefined ? level.referrals_required_for_withdrawal : 1;
                     levelModal.classList.add('active');
                 });
             });

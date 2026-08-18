@@ -9,7 +9,7 @@ class Level extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'icon_url', 'upgrade_cost', 'daily_task_limit', 'weekly_withdrawal_limit'];
+    protected $fillable = ['name', 'icon_url', 'upgrade_cost', 'daily_task_limit', 'weekly_withdrawal_limit', 'withdrawal_days', 'referrals_required_for_withdrawal'];
 
 
     // Is level par kitne users hain

@@ -24,6 +24,8 @@ class LevelController extends Controller
             'upgrade_cost' => 'required|numeric|min:0',
             'daily_task_limit' => 'required|integer|min:0',
             'weekly_withdrawal_limit' => 'required|numeric|min:0',
+            'withdrawal_days' => 'required|integer|min:0',
+            'referrals_required_for_withdrawal' => 'required|integer|min:0',
             'icon' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
@@ -53,6 +55,8 @@ class LevelController extends Controller
             'upgrade_cost' => 'required|numeric|min:0',
             'daily_task_limit' => 'required|integer|min:0',
             'weekly_withdrawal_limit' => 'required|numeric|min:0',
+            'withdrawal_days' => 'required|integer|min:0',
+            'referrals_required_for_withdrawal' => 'required|integer|min:0',
             'icon' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 

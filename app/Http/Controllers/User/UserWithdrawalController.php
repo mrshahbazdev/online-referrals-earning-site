@@ -25,7 +25,9 @@ class UserWithdrawalController extends Controller
 
         $isEligible = $user->isEligibleForWithdrawal();
         
-        $cooldownDays = $user->withdrawal_days_override !== null ? $user->withdrawal_days_override : 7;
+        $cooldownDays = $user->withdrawal_days_override !== null 
+            ? $user->withdrawal_days_override 
+            : ($user->level->withdrawal_days ?? 7);
 
         $lastWithdrawal = WithdrawalRequest::where('user_id', $user->id)
             ->whereIn('status', ['pending', 'approved'])
@@ -44,7 +46,9 @@ class UserWithdrawalController extends Controller
         
         // Referral requirement check
         $referralRequirementMet = true;
-        $referralsRequired = $user->referrals_required_for_withdrawal ?? 1;
+        $referralsRequired = $user->referrals_required_for_withdrawal !== null 
+            ? $user->referrals_required_for_withdrawal 
+            : ($user->level->referrals_required_for_withdrawal ?? 1);
         
         if ($lastWithdrawal && !$user->bypass_referral_requirement && $referralsRequired > 0) {
             // Check if user has referred someone who is KYC approved AFTER the last withdrawal
@@ -82,7 +86,9 @@ class UserWithdrawalController extends Controller
             return back()->with('error', 'Please complete your profile and KYC to enable withdrawals.');
         }
 
-        $cooldownDays = $user->withdrawal_days_override !== null ? $user->withdrawal_days_override : 7;
+        $cooldownDays = $user->withdrawal_days_override !== null 
+            ? $user->withdrawal_days_override 
+            : ($user->level->withdrawal_days ?? 7);
 
         $lastWithdrawal = WithdrawalRequest::where('user_id', $user->id)
             ->whereIn('status', ['pending', 'approved'])
@@ -96,7 +102,9 @@ class UserWithdrawalController extends Controller
             }
             
             // Referral Requirement
-            $referralsRequired = $user->referrals_required_for_withdrawal ?? 1;
+            $referralsRequired = $user->referrals_required_for_withdrawal !== null
+                ? $user->referrals_required_for_withdrawal
+                : ($user->level->referrals_required_for_withdrawal ?? 1);
             
             if (!$user->bypass_referral_requirement && $referralsRequired > 0) {
                 $newVerifiedReferrals = User::where('referred_by_id', $user->id)
