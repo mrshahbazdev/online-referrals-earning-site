@@ -33,13 +33,17 @@
         }
         .fake-transaction-popup.show { opacity: 1; transform: translateY(0); }
 
-        /* Floating WhatsApp Button Styles */
-        .floating-whatsapp-btn {
+        /* Floating Social Buttons */
+        .floating-social-container {
             position: fixed;
             bottom: 1.5rem;
             right: 1.5rem;
-            background-color: #25D366;
-            color: white;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 1000;
+        }
+        .floating-social-btn {
             width: 56px;
             height: 56px;
             border-radius: 9999px;
@@ -47,12 +51,17 @@
             align-items: center;
             justify-content: center;
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            z-index: 1000;
+            color: white;
             transition: transform 0.2s ease-in-out;
+            text-decoration: none;
         }
-        .floating-whatsapp-btn:hover {
+        .floating-social-btn:hover {
             transform: scale(1.1);
+            color: white;
         }
+        .btn-whatsapp { background-color: #25D366; }
+        .btn-imo { background-color: #00A3E0; } /* IMO official color approx */
+        .btn-telegram { background-color: #0088cc; }
     </style>
     @stack('styles')
     {!! $settings['header_scripts'] ?? '' !!}
@@ -124,12 +133,26 @@
         </div>
     </div>
 
-    <!-- Floating WhatsApp Button -->
-    @if(!empty($settings['whatsapp_number']))
-        <a href="https://wa.me/{{ $settings['whatsapp_number'] }}" target="_blank" class="floating-whatsapp-btn">
-            <i class="ph-bold ph-whatsapp-logo text-3xl"></i>
-        </a>
-    @endif
+    <!-- Floating Social Buttons -->
+    <div class="floating-social-container">
+        @if(!empty($settings['support_telegram']))
+            <a href="{{ Str::startsWith($settings['support_telegram'], ['http', 't.me']) ? $settings['support_telegram'] : 'https://t.me/'.ltrim($settings['support_telegram'], '@') }}" target="_blank" class="floating-social-btn btn-telegram">
+                <i class="ph-fill ph-telegram-logo text-3xl"></i>
+            </a>
+        @endif
+        
+        @if(!empty($settings['support_imo']))
+            <a href="{{ Str::startsWith($settings['support_imo'], 'http') ? $settings['support_imo'] : 'https://imo.im/'.ltrim($settings['support_imo'], '@+') }}" target="_blank" class="floating-social-btn btn-imo">
+                <span class="font-black italic text-lg tracking-tight">imo</span>
+            </a>
+        @endif
+        
+        @if(!empty($settings['whatsapp_number']))
+            <a href="https://wa.me/{{ ltrim($settings['whatsapp_number'], '+') }}" target="_blank" class="floating-social-btn btn-whatsapp">
+                <i class="ph-bold ph-whatsapp-logo text-3xl"></i>
+            </a>
+        @endif
+    </div>
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
