@@ -138,6 +138,14 @@ Route::get('/run-deployment-commands', function () {
     return 'Deployment commands executed successfully!';
 });
 
+Route::get('/run-migrations', function () {
+    // Zaroori: Is route ko kaam karne ke baad foran delete kar dein!
+
+    Artisan::call('migrate', ['--force' => true]);
+
+    return '<pre>'.Artisan::output().'</pre>';
+});
+
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\Models\User;
