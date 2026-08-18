@@ -27,7 +27,15 @@
             <i class="ph ph-caret-right text-gray-500"></i>
         </a>
         <a href="{{ route('support.index') }}" class="flex items-center justify-between p-3 rounded-lg hover:bg-[#1E1F2B] {{ request()->routeIs('support.index') ? 'bg-[#1E1F2B]' : '' }}">
-            <div class="flex items-center gap-4"><i class="ph ph-chat-circle-dots text-xl text-yellow-400"></i><span class="text-white">Support</span></div>
+            <div class="flex items-center gap-4">
+                <div class="relative">
+                    <i class="ph ph-chat-circle-dots text-xl text-yellow-400"></i>
+                    @if(isset($unreadSupportCount) && $unreadSupportCount > 0)
+                        <span class="absolute -top-1 -right-2 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">{{ $unreadSupportCount }}</span>
+                    @endif
+                </div>
+                <span class="text-white">Support</span>
+            </div>
             <i class="ph ph-caret-right text-gray-500"></i>
         </a>
     </nav>

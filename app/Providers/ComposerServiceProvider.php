@@ -22,6 +22,15 @@ class ComposerServiceProvider extends ServiceProvider
                 $settings = Setting::pluck('value', 'key')->all();
                 $view->with('settings', $settings);
             }
+            
+            $unreadSupportCount = 0;
+            if (\Illuminate\Support\Facades\Auth::check()) {
+                $unreadSupportCount = \App\Models\SupportMessage::where('user_id', \Illuminate\Support\Facades\Auth::id())
+                    ->where('sender', 'admin')
+                    ->where('is_read', false)
+                    ->count();
+            }
+            $view->with('unreadSupportCount', $unreadSupportCount);
         });
     }
 }

@@ -78,7 +78,15 @@
                 <h1 class="text-lg font-bold">{{ $settings['site_name'] ?? 'CodeShack' }}</h1>
                 <div class="flex items-center space-x-4">
                     <i id="bell-button" class="ph ph-bell text-2xl cursor-pointer"></i>
-                    <i id="menu-button" class="ph ph-list text-2xl cursor-pointer"></i>
+                    <div class="relative">
+                        <i id="menu-button" class="ph ph-list text-2xl cursor-pointer"></i>
+                        @if(isset($unreadSupportCount) && $unreadSupportCount > 0)
+                            <span class="absolute -top-1 -right-1 flex h-3 w-3">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                            </span>
+                        @endif
+                    </div>
                 </div>
             </header>
 
@@ -154,8 +162,36 @@
         @endif
     </div>
 
+    <!-- Support Notification Popup -->
+    @if(isset($unreadSupportCount) && $unreadSupportCount > 0)
+        <div id="support-notification-popup" class="fixed top-4 left-4 right-4 bg-[#1E1F2B] text-white p-4 rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.8)] flex items-center gap-4 z-[9999] transform -translate-y-[150%] transition-transform duration-500 ease-out border border-gray-700 cursor-pointer" onclick="window.location.href='{{ route('support.index') }}'">
+            <div class="bg-yellow-400 p-2.5 rounded-full">
+                <i class="ph-fill ph-chat-circle-dots text-2xl text-black"></i>
+            </div>
+            <div class="flex-grow">
+                <p class="text-[11px] text-gray-400 font-bold uppercase tracking-widest mb-0.5">Support Team</p>
+                <p class="font-bold text-sm text-yellow-50">Admin has replied to your message!</p>
+            </div>
+            <div class="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                {{ $unreadSupportCount }}
+            </div>
+        </div>
+    @endif
+
     <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // --- Support Notification Logic ---
+        const supportPopup = document.getElementById('support-notification-popup');
+        if (supportPopup) {
+            setTimeout(() => {
+                supportPopup.classList.remove('-translate-y-[150%]');
+            }, 800);
+            
+            // Auto hide after 8 seconds
+            setTimeout(() => {
+                supportPopup.classList.add('-translate-y-[150%]');
+            }, 8000);
+        }
         // --- Side Menu Logic ---
         const menuButton = document.getElementById('menu-button');
         const menuContainer = document.getElementById('side-menu-container');
