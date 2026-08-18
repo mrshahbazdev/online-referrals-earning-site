@@ -205,6 +205,13 @@
                 </div>
                 <div class="stat-card">
                     <div class="stat-card-header">
+                        <span>Total Withdrawals</span>
+                        <i class="ph ph-money" style="color: var(--red);"></i>
+                    </div>
+                    <p class="value">${{ number_format($totalWithdrawal, 2) }}</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-header">
                         <span>Pending KYC</span>
                         <i class="ph ph-warning-circle" style="color: var(--accent-color);"></i>
                     </div>

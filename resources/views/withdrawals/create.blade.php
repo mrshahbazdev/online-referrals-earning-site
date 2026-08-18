@@ -18,12 +18,21 @@
         @endif
 
         @if($isEligible)
-            @if($lastWithdrawal)
+            @if(!$canWithdraw)
                 <div class="bg-blue-500/10 text-blue-300 p-6 rounded-lg text-center space-y-2">
                     <h3 class="font-bold text-lg">Withdrawal Limit Reached</h3>
-                    <p class="text-sm">You have already made a withdrawal this week. You can make another request in:</p>
+                    <p class="text-sm">You have a recent withdrawal. You can make another request in:</p>
                     <div id="countdown-timer" class="text-3xl font-bold text-white py-2">
                         <span id="days">0</span>d <span id="hours">0</span>h <span id="minutes">0</span>m <span id="seconds">0</span>s
+                    </div>
+                </div>
+            @elseif(!$referralRequirementMet)
+                <div class="bg-yellow-500/10 text-yellow-300 p-6 rounded-lg text-center space-y-2">
+                    <h3 class="font-bold text-lg">Referral Requirement</h3>
+                    <p class="text-sm">To make your next withdrawal, you must refer at least <strong>1 new user</strong> who completes their KYC verification.</p>
+                    <p class="text-xs text-gray-400 mt-2">The user must register using your referral link and have their KYC approved after your last withdrawal.</p>
+                    <div class="mt-4">
+                        <a href="{{ route('team.index') }}" class="bg-yellow-400 text-black font-bold py-2 px-4 rounded-lg inline-block text-sm">Go to Referral Page</a>
                     </div>
                 </div>
             @else
@@ -96,10 +105,10 @@ document.addEventListener('DOMContentLoaded', function() {
     toggleBankName(); // Initial check
 });
 </script>
-@if(isset($lastWithdrawal))
+@if(isset($nextAvailableDate) && $nextAvailableDate)
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const countdownDate = new Date("{{ $endOfWeek->toIso8601String() }}").getTime();
+    const countdownDate = new Date("{{ $nextAvailableDate->toIso8601String() }}").getTime();
 
     const timerInterval = setInterval(function() {
         const now = new Date().getTime();

@@ -23,6 +23,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'referral_code',
         'referred_by_id',
         'level_id',
+        'referred_by',
+        'is_banned',
+        'withdrawal_limit_override',
+        'withdrawal_days_override',
+        'bypass_referral_requirement',
         'kyc_status',
         'role',
     ];

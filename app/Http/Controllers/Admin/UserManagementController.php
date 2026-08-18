@@ -93,13 +93,21 @@ class UserManagementController extends Controller
             'mobile_number' => ['nullable', 'string', 'max:255'],
             'address' => ['nullable', 'string'],
             'kyc_status' => ['required', 'in:unverified,pending,approved,rejected'],
+            'withdrawal_limit_override' => ['nullable', 'numeric', 'min:0'],
+            'withdrawal_days_override' => ['nullable', 'integer', 'min:0'],
+            'bypass_referral_requirement' => ['nullable', 'boolean'],
         ]);
 
-        // Tamam fields ko update karein
-        $user->update($request->only([
+        $data = $request->only([
             'username', 'email', 'level_id', 'balance',
-            'first_name', 'last_name', 'mobile_number', 'address', 'kyc_status'
-        ]));
+            'first_name', 'last_name', 'mobile_number', 'address', 'kyc_status',
+            'withdrawal_limit_override', 'withdrawal_days_override'
+        ]);
+        
+        $data['bypass_referral_requirement'] = $request->has('bypass_referral_requirement');
+
+        // Tamam fields ko update karein
+        $user->update($data);
 
         if ($request->filled('password')) {
             $user->update(['password' => Hash::make($request->password)]);

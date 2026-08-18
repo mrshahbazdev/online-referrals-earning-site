@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\WithdrawalRequest;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -23,13 +24,41 @@ class UserWithdrawalController extends Controller
         }
 
         $isEligible = $user->isEligibleForWithdrawal();
-        $endOfWeek = Carbon::now()->endOfWeek();
+        
+        $cooldownDays = $user->withdrawal_days_override !== null ? $user->withdrawal_days_override : 7;
 
         $lastWithdrawal = WithdrawalRequest::where('user_id', $user->id)
-            ->whereBetween('created_at', [Carbon::now()->startOfWeek(), $endOfWeek])
+            ->whereIn('status', ['pending', 'approved'])
+            ->latest()
             ->first();
             
-        $levelLimit = $user->level->weekly_withdrawal_limit ?? 0;
+        $nextAvailableDate = null;
+        $canWithdraw = true;
+        
+        if ($lastWithdrawal) {
+            $nextAvailableDate = Carbon::parse($lastWithdrawal->created_at)->addDays($cooldownDays);
+            if ($nextAvailableDate->isFuture()) {
+                $canWithdraw = false;
+            }
+        }
+        
+        // Referral requirement check
+        $referralRequirementMet = true;
+        if ($lastWithdrawal && !$user->bypass_referral_requirement) {
+            // Check if user has referred someone who is KYC approved AFTER the last withdrawal
+            $newVerifiedReferrals = User::where('referred_by_id', $user->id)
+                ->where('kyc_status', 'approved')
+                ->where('created_at', '>', $lastWithdrawal->created_at)
+                ->count();
+                
+            if ($newVerifiedReferrals < 1) {
+                $referralRequirementMet = false;
+            }
+        }
+            
+        $levelLimit = $user->withdrawal_limit_override !== null 
+            ? $user->withdrawal_limit_override 
+            : ($user->level->weekly_withdrawal_limit ?? 0);
         
         if ($levelLimit > 0) {
             $maxWithdrawal = $levelLimit;
@@ -37,7 +66,7 @@ class UserWithdrawalController extends Controller
             $maxWithdrawal = $user->balance; // Treat 0 as unlimited
         }
 
-        return view('withdrawals.create', compact('user', 'isEligible', 'lastWithdrawal', 'endOfWeek', 'maxWithdrawal'));
+        return view('withdrawals.create', compact('user', 'isEligible', 'lastWithdrawal', 'canWithdraw', 'nextAvailableDate', 'maxWithdrawal', 'referralRequirementMet'));
     }
 
     /**
@@ -51,17 +80,35 @@ class UserWithdrawalController extends Controller
             return back()->with('error', 'Please complete your profile and KYC to enable withdrawals.');
         }
 
-        $startOfWeek = Carbon::now()->startOfWeek();
-        $endOfWeek = Carbon::now()->endOfWeek();
-        $hasWithdrawnThisWeek = WithdrawalRequest::where('user_id', $user->id)
-            ->whereBetween('created_at', [$startOfWeek, $endOfWeek])
-            ->exists();
+        $cooldownDays = $user->withdrawal_days_override !== null ? $user->withdrawal_days_override : 7;
 
-        if ($hasWithdrawnThisWeek) {
-            return back()->with('error', 'You can only make one withdrawal request per week.');
+        $lastWithdrawal = WithdrawalRequest::where('user_id', $user->id)
+            ->whereIn('status', ['pending', 'approved'])
+            ->latest()
+            ->first();
+
+        if ($lastWithdrawal) {
+            $nextAvailableDate = Carbon::parse($lastWithdrawal->created_at)->addDays($cooldownDays);
+            if ($nextAvailableDate->isFuture()) {
+                return back()->with('error', 'You must wait ' . $cooldownDays . ' days between withdrawals.');
+            }
+            
+            // Referral Requirement
+            if (!$user->bypass_referral_requirement) {
+                $newVerifiedReferrals = User::where('referred_by_id', $user->id)
+                    ->where('kyc_status', 'approved')
+                    ->where('created_at', '>', $lastWithdrawal->created_at)
+                    ->count();
+                    
+                if ($newVerifiedReferrals < 1) {
+                    return back()->with('error', 'You must refer at least 1 new user (with verified KYC) after your last withdrawal to withdraw again.');
+                }
+            }
         }
 
-        $levelLimit = $user->level->weekly_withdrawal_limit ?? 0;
+        $levelLimit = $user->withdrawal_limit_override !== null 
+            ? $user->withdrawal_limit_override 
+            : ($user->level->weekly_withdrawal_limit ?? 0);
         
         if ($levelLimit > 0) {
             $maxAllowed = min($levelLimit, $user->balance);
@@ -76,7 +123,7 @@ class UserWithdrawalController extends Controller
             'account_number' => 'required|string|max:255',
             'bank_name' => 'nullable|string|max:255',
         ], [
-            'amount.max' => 'The withdrawal amount exceeds your available balance or weekly limit.'
+            'amount.max' => 'The withdrawal amount exceeds your available balance or withdrawal limit.'
         ]);
         
         // Sirf request banayein. Balance se paisay na kaatein.

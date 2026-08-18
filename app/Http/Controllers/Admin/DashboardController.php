@@ -23,6 +23,9 @@ class DashboardController extends Controller
 
         // Calculate revenue from approved investment requests
         $totalRevenue = InvestmentRequest::where('status', 'approved')->sum('amount');
+        
+        // Calculate total approved withdrawals
+        $totalWithdrawal = WithdrawalRequest::where('status', 'approved')->sum('amount');
 
         // --- New Chart Data Logic ---
         $registrations = User::select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as count'))
@@ -51,6 +54,7 @@ class DashboardController extends Controller
             'pendingKyc',
             'pendingWithdrawals',
             'totalRevenue',
+            'totalWithdrawal',
             'chartLabels',
             'chartData'
         ));

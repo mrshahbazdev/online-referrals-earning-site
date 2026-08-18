@@ -39,7 +39,13 @@ class UserLevelController extends Controller
         // Balance se raqam kaat lein aur level update karein
         $user->balance -= $level->upgrade_cost;
         $user->level_id = $level->id;
+        $user->kyc_status = 'unverified'; // Auto unverify KYC on upgrade
         $user->save();
+        
+        // Reject any pending or approved KYC submissions so user has to re-apply
+        \App\Models\KycSubmission::where('user_id', $user->id)
+            ->whereIn('status', ['pending', 'approved'])
+            ->update(['status' => 'rejected', 'rejection_reason' => 'Auto-rejected due to Level Upgrade. Please submit again.']);
 
         // Transaction record banayein
         Transaction::create([

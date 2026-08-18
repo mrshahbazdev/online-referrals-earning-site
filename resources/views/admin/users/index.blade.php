@@ -261,6 +261,27 @@
                             </div>
                         </div>
 
+                        <!-- Full Width: Withdrawal Overrides -->
+                        <div class="mt-6 space-y-4">
+                            <h3 class="text-lg font-semibold text-yellow-400 border-b border-gray-700 pb-2">Withdrawal Overrides & Restrictions</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <div class="form-group">
+                                    <label for="withdrawal_limit_override">Withdrawal Limit Override ($)</label>
+                                    <input type="number" step="0.01" id="withdrawal_limit_override" name="withdrawal_limit_override" class="mt-1 w-full bg-[#1E1F2B] border border-gray-700 rounded-lg p-3" placeholder="Leave empty for level default (0 = Unlimited)">
+                                </div>
+                                <div class="form-group">
+                                    <label for="withdrawal_days_override">Withdrawal Cooldown Days Override</label>
+                                    <input type="number" id="withdrawal_days_override" name="withdrawal_days_override" class="mt-1 w-full bg-[#1E1F2B] border border-gray-700 rounded-lg p-3" placeholder="Leave empty for 7 days default">
+                                </div>
+                                <div class="form-group flex items-center h-full pt-4">
+                                    <label class="flex items-center space-x-3 cursor-pointer">
+                                        <input type="checkbox" id="bypass_referral_requirement" name="bypass_referral_requirement" class="w-5 h-5 text-yellow-400 bg-[#1E1F2B] border-gray-700 rounded focus:ring-yellow-400 focus:ring-2">
+                                        <span class="text-gray-300 font-medium">Bypass Next Withdrawal Referral Requirement</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="modal-footer">
                             <button type="button" class="btn-secondary close-modal-btn">Cancel</button>
                             <button type="submit" class="btn-primary">Save Changes</button>
@@ -325,6 +346,9 @@
                     document.getElementById('balance').value = user.balance;
                     document.getElementById('level_id').value = user.level_id;
                     document.getElementById('kyc_status').value = user.kyc_status;
+                    document.getElementById('withdrawal_limit_override').value = user.withdrawal_limit_override !== null ? user.withdrawal_limit_override : '';
+                    document.getElementById('withdrawal_days_override').value = user.withdrawal_days_override !== null ? user.withdrawal_days_override : '';
+                    document.getElementById('bypass_referral_requirement').checked = user.bypass_referral_requirement == 1;
                     document.getElementById('referral_code').textContent = user.referral_code || 'N/A';
                     document.getElementById('referred_by').textContent = user.referrer ? user.referrer.username : 'None';
 
