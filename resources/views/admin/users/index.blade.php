@@ -275,7 +275,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="referrals_required_for_withdrawal">Referrals Required for Next Withdrawal</label>
-                                    <input type="number" id="referrals_required_for_withdrawal" name="referrals_required_for_withdrawal" required min="0" class="mt-1 w-full bg-[#1E1F2B] border border-gray-700 rounded-lg p-3" value="1">
+                                    <input type="number" id="referrals_required_for_withdrawal" name="referrals_required_for_withdrawal" min="0" class="mt-1 w-full bg-[#1E1F2B] border border-gray-700 rounded-lg p-3" placeholder="Leave empty for level default">
                                 </div>
                                 <div class="form-group flex items-center h-full pt-4 sm:col-span-2 lg:col-span-3">
                                     <label class="flex items-center space-x-3 cursor-pointer">
@@ -352,7 +352,7 @@
                     document.getElementById('kyc_status').value = user.kyc_status;
                     document.getElementById('withdrawal_limit_override').value = user.withdrawal_limit_override !== null ? user.withdrawal_limit_override : '';
                     document.getElementById('withdrawal_days_override').value = user.withdrawal_days_override !== null ? user.withdrawal_days_override : '';
-                    document.getElementById('referrals_required_for_withdrawal').value = user.referrals_required_for_withdrawal !== undefined ? user.referrals_required_for_withdrawal : 1;
+                    document.getElementById('referrals_required_for_withdrawal').value = user.referrals_required_for_withdrawal !== null ? user.referrals_required_for_withdrawal : '';
                     document.getElementById('bypass_referral_requirement').checked = user.bypass_referral_requirement == 1;
                     document.getElementById('referral_code').textContent = user.referral_code || 'N/A';
                     document.getElementById('referred_by').textContent = user.referrer ? user.referrer.username : 'None';
