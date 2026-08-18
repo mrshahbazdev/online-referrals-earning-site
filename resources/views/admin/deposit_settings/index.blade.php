@@ -59,7 +59,7 @@
                     @if($details->qr_code_url)
                         <div class="mt-4">
                             <p class="text-sm text-gray-400 mb-2">Current QR Code:</p>
-                            <img src="{{ asset('storage/' . $details->qr_code_url) }}" alt="QR Code" class="w-32 h-32 rounded-lg bg-white p-1">
+                            <img src="{{ asset('uploads/' . $details->qr_code_url) }}" alt="QR Code" class="w-32 h-32 rounded-lg bg-white p-1">
                         </div>
                     @endif
                 </div>
@@ -71,3 +71,4 @@
         </form>
     </div>
 @endsection
+

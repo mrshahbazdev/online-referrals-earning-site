@@ -45,7 +45,7 @@
                     @if(isset($settings['site_logo']))
                         <div class="mt-4">
                             <p class="text-sm text-gray-400 mb-2">Current Logo:</p>
-                            <img src="{{ asset('storage/' . $settings['site_logo']) }}" alt="Logo" class="w-32 mt-2 rounded-lg bg-white p-2">
+                            <img src="{{ asset('uploads/' . $settings['site_logo']) }}" alt="Logo" class="w-32 mt-2 rounded-lg bg-white p-2">
                         </div>
                     @endif
                 </div>
@@ -94,3 +94,4 @@
   });
 </script>
 @endpush
+

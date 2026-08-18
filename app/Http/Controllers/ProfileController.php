@@ -53,7 +53,7 @@ class ProfileController extends Controller
 
         return response()->json([
             'success' => 'Profile image updated successfully.',
-            'image_url' => asset('storage/' . $path)
+            'image_url' => asset('uploads/' . $path)
         ]);
     }
 
@@ -72,3 +72,4 @@ class ProfileController extends Controller
         return Redirect::to('/');
     }
 }
+

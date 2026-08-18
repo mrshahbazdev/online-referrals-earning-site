@@ -7,14 +7,14 @@
         <!-- Profile Header -->
         <div class="flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <img src="{{ $user->profile_image_url ? asset('storage/' . $user->profile_image_url) : 'https://placehold.co/64x64/fbbF24/10111A?text=' . strtoupper(substr($user->username, 0, 1)) }}" alt="Profile Picture" class="w-16 h-16 rounded-full border-2 border-yellow-400 object-cover">
+                <img src="{{ $user->profile_image_url ? asset('uploads/' . $user->profile_image_url) : 'https://placehold.co/64x64/fbbF24/10111A?text=' . strtoupper(substr($user->username, 0, 1)) }}" alt="Profile Picture" class="w-16 h-16 rounded-full border-2 border-yellow-400 object-cover">
                 <span class="font-semibold text-lg">{{ $user->username }}</span>
             </div>
 
             <!-- Dynamic Level Icon (Clickable) -->
             <a href="{{ route('levels.index') }}" class="text-center">
                 @if($user->level && $user->level->icon_url)
-                    <img src="{{ asset('storage/' . $user->level->icon_url) }}" alt="{{ $user->level->name }}" class="w-12 h-12 rounded-full mx-auto">
+                    <img src="{{ asset('uploads/' . $user->level->icon_url) }}" alt="{{ $user->level->name }}" class="w-12 h-12 rounded-full mx-auto">
                 @else
                     <div class="bg-gradient-to-b from-pink-500 to-rose-600 p-2 rounded-lg inline-block">
                         <i class="ph-fill ph-crown-simple text-2xl text-white"></i>
@@ -87,3 +87,4 @@
         </div>
     </div>
 @endsection
+

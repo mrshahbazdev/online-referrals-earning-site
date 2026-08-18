@@ -209,7 +209,7 @@ Route::get('/clear-config-cache', function () {
 });
 
 // Fallback route to serve old storage files without needing symlinks or data migration
-Route::get('/storage/{path}', function ($path) {
+Route::get('/uploads/{path}', function ($path) {
     $filePath = storage_path('app/public/' . $path);
     if (file_exists($filePath) && !is_dir($filePath)) {
         return response()->file($filePath);

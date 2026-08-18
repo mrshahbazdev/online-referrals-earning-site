@@ -44,7 +44,7 @@
                 @forelse ($level1 as $member)
                     <div class="bg-[#1E1F2B] p-3 rounded-lg flex items-center justify-between">
                         <div class="flex items-center gap-3">
-                            <img src="{{ $member->profile_image_url ? asset('storage/' . $member->profile_image_url) : 'https://placehold.co/48x48/1E1F2B/FFFFFF?text=' . strtoupper(substr($member->username, 0, 1)) }}" alt="member" class="w-12 h-12 rounded-full object-cover">
+                            <img src="{{ $member->profile_image_url ? asset('uploads/' . $member->profile_image_url) : 'https://placehold.co/48x48/1E1F2B/FFFFFF?text=' . strtoupper(substr($member->username, 0, 1)) }}" alt="member" class="w-12 h-12 rounded-full object-cover">
                             <div>
                                 <p class="font-semibold">Username: {{ $member->username }}</p>
                                 <p class="text-xs text-gray-400">Joined: {{ $member->created_at->format('d M, Y') }}</p>
@@ -69,7 +69,7 @@
                 @forelse ($level2 as $member)
                     <div class="bg-[#1E1F2B] p-3 rounded-lg flex items-center justify-between">
                         <div class="flex items-center gap-3">
-                            <img src="{{ $member->profile_image_url ? asset('storage/' . $member->profile_image_url) : 'https://placehold.co/48x48/1E1F2B/FFFFFF?text=' . strtoupper(substr($member->username, 0, 1)) }}" alt="member" class="w-12 h-12 rounded-full object-cover">
+                            <img src="{{ $member->profile_image_url ? asset('uploads/' . $member->profile_image_url) : 'https://placehold.co/48x48/1E1F2B/FFFFFF?text=' . strtoupper(substr($member->username, 0, 1)) }}" alt="member" class="w-12 h-12 rounded-full object-cover">
                             <div>
                                 <p class="font-semibold">Username: {{ $member->username }}</p>
                                 <p class="text-xs text-gray-400">Joined: {{ $member->created_at->format('d M, Y') }}</p>
@@ -93,7 +93,7 @@
                 @forelse ($level3 as $member)
                     <div class="bg-[#1E1F2B] p-3 rounded-lg flex items-center justify-between">
                         <div class="flex items-center gap-3">
-                            <img src="{{ $member->profile_image_url ? asset('storage/' . $member->profile_image_url) : 'https://placehold.co/48x48/1E1F2B/FFFFFF?text=' . strtoupper(substr($member->username, 0, 1)) }}" alt="member" class="w-12 h-12 rounded-full object-cover">
+                            <img src="{{ $member->profile_image_url ? asset('uploads/' . $member->profile_image_url) : 'https://placehold.co/48x48/1E1F2B/FFFFFF?text=' . strtoupper(substr($member->username, 0, 1)) }}" alt="member" class="w-12 h-12 rounded-full object-cover">
                             <div>
                                 <p class="font-semibold">Username: {{ $member->username }}</p>
                                 <p class="text-xs text-gray-400">Joined: {{ $member->created_at->format('d M, Y') }}</p>
@@ -160,3 +160,4 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 @endpush
+

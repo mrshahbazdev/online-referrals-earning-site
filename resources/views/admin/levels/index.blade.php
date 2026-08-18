@@ -149,7 +149,7 @@
                             <tr>
                                 <td data-label="Icon">
                                     @if($level->icon_url)
-                                        <img src="{{ asset('storage/' . $level->icon_url) }}" alt="{{ $level->name }}" class="level-icon">
+                                        <img src="{{ asset('uploads/' . $level->icon_url) }}" alt="{{ $level->name }}" class="level-icon">
                                     @endif
                                 </td>
                                 <td data-label="Name">{{ $level->name }}</td>
@@ -281,3 +281,4 @@
     </script>
     @endpush
 @endsection
+

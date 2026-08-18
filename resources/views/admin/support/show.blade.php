@@ -116,7 +116,7 @@
                         <div class="message-bubble">
                             <div class="message-sender">{{ $msg->sender === 'admin' ? 'You' : $user->username }}</div>
                             @if($msg->image_path)
-                                <img src="{{ asset('storage/' . $msg->image_path) }}" class="chat-image" alt="Attachment">
+                                <img src="{{ asset('uploads/' . $msg->image_path) }}" class="chat-image" alt="Attachment">
                             @endif
                             @if($msg->message)
                                 <div class="message-text">{{ $msg->message }}</div>
@@ -291,3 +291,4 @@
 })();
 </script>
 @endpush
+

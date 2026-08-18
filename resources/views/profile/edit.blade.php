@@ -15,7 +15,7 @@
     <!-- Profile Picture -->
     <div class="flex flex-col items-center space-y-2">
         <div class="relative">
-            <img id="profileImagePreview" src="{{ $user->profile_image_url ? asset('storage/app/public/' . $user->profile_image_url) : 'https://placehold.co/96x96/fbbF24/10111A?text=' . strtoupper(substr($user->username, 0, 1)) }}" alt="Profile Picture" class="w-24 h-24 rounded-full border-2 border-yellow-400 object-cover">
+            <img id="profileImagePreview" src="{{ $user->profile_image_url ? asset('uploads/' . $user->profile_image_url) : 'https://placehold.co/96x96/fbbF24/10111A?text=' . strtoupper(substr($user->username, 0, 1)) }}" alt="Profile Picture" class="w-24 h-24 rounded-full border-2 border-yellow-400 object-cover">
             <label for="profileImageInput" class="absolute bottom-0 right-0 bg-yellow-400 text-black p-2 rounded-full cursor-pointer">
                 <i class="ph ph-camera"></i>
             </label>
@@ -166,3 +166,4 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 @endpush
+
