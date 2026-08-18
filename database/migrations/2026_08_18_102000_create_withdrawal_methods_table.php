@@ -8,7 +8,10 @@ return new class extends Migration
 {
     public function up(): void
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('withdrawal_methods');
+        Schema::enableForeignKeyConstraints();
+        
         Schema::create('withdrawal_methods', function (Blueprint $table) {
             $table->id();
             $table->string('name');
