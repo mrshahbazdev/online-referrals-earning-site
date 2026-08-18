@@ -71,16 +71,34 @@
         </a>
 
         <!-- Referral -->
-        <a href="{{ route('team.index') }}" >
-            <div class="px-4 py-3 mt-4 bg-[#1E1F2B] rounded-lg flex items-center justify-between">
+        <a href="{{ route('team.index') }}" class="block">
+            <div class="px-4 py-3 mt-4 bg-[#1E1F2B] rounded-lg flex items-center justify-between shadow-sm">
                 <div class="flex items-center gap-3">
                     <i class="ph ph-gift text-3xl text-yellow-400"></i>
                     <div>
-                        <p class="font-semibold">Referral Earn</p>
+                        <p class="font-semibold text-white">Referral Earn</p>
                         <p class="text-xs text-gray-400">Invite a friend to earn ${{ number_format($joiningBonus, 2) }}</p>
                     </div>
                 </div>
                 <span class="font-bold text-lg text-yellow-400">${{ number_format($commissionWallet, 2) }}</span>
+            </div>
+        </a>
+
+        <!-- Level Plan -->
+        <a href="{{ route('levels.index') }}" class="block">
+            <div class="px-4 py-3 mt-4 bg-gradient-to-r from-pink-600 to-rose-700 rounded-lg flex items-center justify-between shadow-lg border border-pink-500/30">
+                <div class="flex items-center gap-3">
+                    <div class="bg-white/20 p-2 rounded-full">
+                        <i class="ph-fill ph-stairs text-3xl text-white"></i>
+                    </div>
+                    <div>
+                        <p class="font-bold text-white text-lg">Level Plan</p>
+                        <p class="text-xs text-pink-100">Upgrade your VIP level</p>
+                    </div>
+                </div>
+                <div class="bg-white/10 rounded-full p-1">
+                    <i class="ph ph-caret-right text-white text-xl"></i>
+                </div>
             </div>
         </a>
 
