@@ -30,7 +30,6 @@ class UserWithdrawalController extends Controller
             : ($user->level->withdrawal_days ?? 7);
 
         $lastWithdrawal = WithdrawalRequest::where('user_id', $user->id)
-            ->whereIn('status', ['pending', 'approved'])
             ->latest()
             ->first();
             
@@ -91,7 +90,6 @@ class UserWithdrawalController extends Controller
             : ($user->level->withdrawal_days ?? 7);
 
         $lastWithdrawal = WithdrawalRequest::where('user_id', $user->id)
-            ->whereIn('status', ['pending', 'approved'])
             ->latest()
             ->first();
 
