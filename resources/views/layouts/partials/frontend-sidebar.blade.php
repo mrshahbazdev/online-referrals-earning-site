@@ -26,6 +26,10 @@
             <div class="flex items-center gap-4"><i class="ph ph-stairs text-xl text-yellow-400"></i><span class="text-white">Upgrade Level</span></div>
             <i class="ph ph-caret-right text-gray-500"></i>
         </a>
+        <a href="{{ route('support.index') }}" class="flex items-center justify-between p-3 rounded-lg hover:bg-[#1E1F2B] {{ request()->routeIs('support.index') ? 'bg-[#1E1F2B]' : '' }}">
+            <div class="flex items-center gap-4"><i class="ph ph-chat-circle-dots text-xl text-yellow-400"></i><span class="text-white">Support</span></div>
+            <i class="ph ph-caret-right text-gray-500"></i>
+        </a>
     </nav>
     <p class="text-sm text-gray-500 uppercase tracking-wider mt-10 mb-4">Others</p>
     <nav class="flex flex-col space-y-2">

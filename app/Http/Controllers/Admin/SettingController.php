@@ -24,6 +24,8 @@ class SettingController extends Controller
             'site_logo' => 'nullable|image|mimes:png,jpg,jpeg,svg|max:2048',
             'header_scripts' => 'nullable|string',
             'whatsapp_number' => 'nullable|string|max:255',
+            'support_telegram' => 'nullable|string|max:255',
+            'support_imo' => 'nullable|string|max:255',
             'terms_and_conditions' => 'nullable|string',
             'about_us_content' => 'nullable|string', // Nayi validation
         ];
@@ -45,6 +47,8 @@ class SettingController extends Controller
         Setting::updateOrCreate(['key' => 'site_name'], ['value' => $validatedData['site_name']]);
         Setting::updateOrCreate(['key' => 'header_scripts'], ['value' => $validatedData['header_scripts']]);
         Setting::updateOrCreate(['key' => 'whatsapp_number'], ['value' => $validatedData['whatsapp_number']]);
+        Setting::updateOrCreate(['key' => 'support_telegram'], ['value' => $validatedData['support_telegram']]);
+        Setting::updateOrCreate(['key' => 'support_imo'], ['value' => $validatedData['support_imo']]);
         Setting::updateOrCreate(['key' => 'terms_and_conditions'], ['value' => $validatedData['terms_and_conditions']]);
         Setting::updateOrCreate(['key' => 'about_us_content'], ['value' => $validatedData['about_us_content']]); // Nayi setting save karein
 

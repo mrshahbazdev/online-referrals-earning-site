@@ -58,6 +58,14 @@
                     <input type="text" name="whatsapp_number" value="{{ $settings['whatsapp_number'] ?? '' }}" class="mt-1">
                 </div>
                 <div class="form-group">
+                    <label for="support_telegram">Telegram Support Link / Username</label>
+                    <input type="text" name="support_telegram" value="{{ $settings['support_telegram'] ?? '' }}" class="mt-1" placeholder="e.g. @support_username or https://t.me/support_username">
+                </div>
+                <div class="form-group">
+                    <label for="support_imo">IMO Support Link / Number</label>
+                    <input type="text" name="support_imo" value="{{ $settings['support_imo'] ?? '' }}" class="mt-1" placeholder="e.g. +923001234567 or https://imo.im/username">
+                </div>
+                <div class="form-group">
                     <label for="terms_and_conditions">Terms and Conditions</label>
                     <textarea name="terms_and_conditions" id="terms-editor" rows="10">{{ $settings['terms_and_conditions'] ?? '' }}</textarea>
                 </div>
