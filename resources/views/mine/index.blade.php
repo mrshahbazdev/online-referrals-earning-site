@@ -101,6 +101,32 @@
                     <i class="ph ph-caret-right text-gray-500"></i>
                 </a>
             @endif
+            @if(!empty($settings['support_telegram']))
+                @php
+                    $telegram = $settings['support_telegram'];
+                    $telegramLink = str_starts_with($telegram, 'http') ? $telegram : 'https://t.me/' . ltrim($telegram, '@');
+                @endphp
+                <a href="{{ $telegramLink }}" target="_blank" class="flex items-center justify-between p-4">
+                    <div class="flex items-center gap-4">
+                        <i class="ph ph-telegram-logo text-2xl text-blue-400"></i>
+                        <span>Telegram</span>
+                    </div>
+                    <i class="ph ph-caret-right text-gray-500"></i>
+                </a>
+            @endif
+            @if(!empty($settings['support_imo']))
+                @php
+                    $imo = $settings['support_imo'];
+                    $imoLink = str_starts_with($imo, 'http') ? $imo : 'https://imo.im/' . ltrim($imo, '+');
+                @endphp
+                <a href="{{ $imoLink }}" target="_blank" class="flex items-center justify-between p-4">
+                    <div class="flex items-center gap-4">
+                        <i class="ph ph-chat-circle text-2xl text-indigo-400"></i>
+                        <span>IMO</span>
+                    </div>
+                    <i class="ph ph-caret-right text-gray-500"></i>
+                </a>
+            @endif
         </div>
     </div>
 @endsection
