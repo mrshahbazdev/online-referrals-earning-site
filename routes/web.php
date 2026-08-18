@@ -32,7 +32,6 @@ use App\Http\Controllers\Admin\DepositMethodController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SupportController as AdminSupportController;
 use App\Http\Controllers\User\SupportController;
-use App\Http\Middleware\CheckScriptActivation;
 // --- Public Routes ---
 // These routes can be accessed by anyone.
 // This file includes routes for login, registration, password reset, etc.
@@ -125,7 +124,7 @@ Route::get('/run-deployment-commands', function () {
     Artisan::call('migrate', ['--force' => true]);
 
     // Storage link banayein
-    //Artisan::call('storage:link');
+    Artisan::call('storage:link');
 
     // Application key generate karein (agar zaroorat ho)
     // Artisan::call('key:generate', ['--force' => true]);
@@ -207,18 +206,5 @@ Route::get('/clear-config-cache', function () {
     Artisan::call('event:clear');
     Artisan::call('optimize:clear');
     return 'Configuration cache has been cleared successfully!';
-});
-use App\Models\Setting;
-
-Route::get('/activate-script-now/{secret_code}', function ($secret_code) {
-    // Is secret code ko aap apni marzi se tabdeel kar sakte hain
-    if ($secret_code === '1122') {
-        Setting::updateOrCreate(
-            ['key' => 'is_script_activated'],
-            ['value' => 'true']
-        );
-        return "Script activated successfully!";
-    }
-    return "Invalid activation code.";
 });
 
