@@ -15,6 +15,7 @@
         <li><a href="{{ route('admin.investments.index') }}" class="{{ request()->routeIs('admin.investments.*') ? 'active' : '' }}"><i class="ph ph-chart-line-up"></i> Investment Requests</a></li>
         <li><a href="{{ route('admin.withdrawals.index') }}" class="{{ request()->routeIs('admin.withdrawals.*') ? 'active' : '' }}"><i class="ph ph-arrow-circle-down"></i> Withdrawal Requests</a></li>
         <li><a href="{{ route('admin.deposit-methods.index') }}" class="{{ request()->routeIs('admin.deposit-methods.*') ? 'active' : '' }}"><i class="ph ph-bank"></i> Deposit Methods</a></li>
+        <li><a href="{{ route('admin.withdrawal-methods.index') }}" class="{{ request()->routeIs('admin.withdrawal-methods.*') ? 'active' : '' }}"><i class="ph ph-money"></i> Withdrawal Methods</a></li>
         <li><a href="{{ route('admin.announcements.index') }}" class="{{ request()->routeIs('admin.announcements.*') ? 'active' : '' }}"><i class="ph ph-megaphone"></i> Announcements</a></li>
         @php
             $unreadSupportCount = \App\Models\SupportMessage::where('sender', 'user')->where('is_read', false)->count();

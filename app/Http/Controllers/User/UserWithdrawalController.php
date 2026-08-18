@@ -71,7 +71,9 @@ class UserWithdrawalController extends Controller
             $maxWithdrawal = $user->balance; // Treat 0 as unlimited
         }
 
-        return view('withdrawals.create', compact('user', 'isEligible', 'lastWithdrawal', 'canWithdraw', 'nextAvailableDate', 'maxWithdrawal', 'referralRequirementMet', 'referralsRequired'));
+        $withdrawalMethods = \App\Models\WithdrawalMethod::where('is_active', true)->get();
+
+        return view('withdrawals.create', compact('user', 'isEligible', 'lastWithdrawal', 'canWithdraw', 'nextAvailableDate', 'maxWithdrawal', 'referralRequirementMet', 'referralsRequired', 'withdrawalMethods'));
     }
 
     /**

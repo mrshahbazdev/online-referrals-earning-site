@@ -104,6 +104,7 @@ Route::middleware(['auth:admin', 'is_admin'])->prefix('admin')->name('admin.')->
     Route::get('/deposit-settings', [DepositSettingController::class, 'index'])->name('deposit.settings.index');
     Route::post('/deposit-settings', [DepositSettingController::class, 'store'])->name('deposit.settings.store');
     Route::resource('/deposit-methods', DepositMethodController::class)->except(['show']);
+    Route::resource('/withdrawal-methods', \App\Http\Controllers\Admin\WithdrawalMethodController::class)->except(['show', 'create', 'edit']);
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [SettingController::class, 'store'])->name('settings.store');
 

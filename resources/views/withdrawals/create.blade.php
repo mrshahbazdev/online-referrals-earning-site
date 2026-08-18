@@ -48,10 +48,9 @@
                             <label for="method" class="text-sm font-medium text-gray-400">Withdrawal Method</label>
                             <select id="method" name="method" class="mt-1 w-full bg-[#334155] rounded-lg p-3 text-white" required>
                                 <option value="" disabled selected>Select a method</option>
-                                <option value="USDT TRC20">USDT TRC20</option>
-                                <option value="JazzCash">JazzCash</option>
-                                <option value="Easypaisa">Easypaisa</option>
-                                <option value="Bank Transfer">Bank Transfer</option>
+                                @foreach($withdrawalMethods as $method)
+                                    <option value="{{ $method->name }}">{{ $method->name }}</option>
+                                @endforeach
                             </select>
                             @error('method') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
                         </div>
@@ -94,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const bankNameContainer = document.getElementById('bank_name_container');
 
     function toggleBankName() {
-        if (methodSelect.value === 'Bank Transfer') {
+        if (methodSelect.value.toLowerCase().includes('bank')) {
             bankNameContainer.style.display = 'block';
         } else {
             bankNameContainer.style.display = 'none';
