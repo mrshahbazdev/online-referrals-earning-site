@@ -68,12 +68,9 @@
                 <div class="flex-grow border-t border-gray-700"></div>
             </div>
 
-            <div class="flex justify-center gap-4">
-                <button class="w-12 h-12 bg-[#1E1F2B] rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors"><i class="ph-bold ph-google-logo text-2xl"></i></button>
-                <button class="w-12 h-12 bg-[#1E1F2B] rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors"><i class="ph-bold ph-apple-logo text-2xl"></i></button>
-            </div>
-
-            <p class="text-center text-sm text-gray-400">Don't have an account? <a href="{{ route('register') }}" class="font-medium text-yellow-400 hover:underline">Sign Up</a></p>
+            <a href="{{ route('register') }}" class="block w-full text-center bg-[#1E1F2B] border border-gray-700 text-white font-bold py-3 rounded-lg hover:bg-gray-800 transition-colors">
+                Create New Account
+            </a>
         </div>
     </div>
 </body>
