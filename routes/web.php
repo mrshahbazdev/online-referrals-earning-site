@@ -208,3 +208,11 @@ Route::get('/clear-config-cache', function () {
     return 'Configuration cache has been cleared successfully!';
 });
 
+// Fallback route to serve old storage files without needing symlinks or data migration
+Route::get('/storage/{path}', function ($path) {
+    $filePath = storage_path('app/public/' . $path);
+    if (file_exists($filePath) && !is_dir($filePath)) {
+        return response()->file($filePath);
+    }
+    abort(404);
+})->where('path', '.*');
