@@ -29,8 +29,13 @@ class UserWithdrawalController extends Controller
             ->whereBetween('created_at', [Carbon::now()->startOfWeek(), $endOfWeek])
             ->first();
             
-        // Maximum withdrawal amount ko controller mein hi calculate karein
-        $maxWithdrawal = $user->level->weekly_withdrawal_limit ?? 0;
+        $levelLimit = $user->level->weekly_withdrawal_limit ?? 0;
+        
+        if ($levelLimit > 0) {
+            $maxWithdrawal = $levelLimit;
+        } else {
+            $maxWithdrawal = $user->balance; // Treat 0 as unlimited
+        }
 
         return view('withdrawals.create', compact('user', 'isEligible', 'lastWithdrawal', 'endOfWeek', 'maxWithdrawal'));
     }
@@ -56,7 +61,13 @@ class UserWithdrawalController extends Controller
             return back()->with('error', 'You can only make one withdrawal request per week.');
         }
 
-        $maxAllowed = min($user->level->weekly_withdrawal_limit ?? 0, $user->balance);
+        $levelLimit = $user->level->weekly_withdrawal_limit ?? 0;
+        
+        if ($levelLimit > 0) {
+            $maxAllowed = min($levelLimit, $user->balance);
+        } else {
+            $maxAllowed = $user->balance; // Treat 0 as unlimited
+        }
 
         $request->validate([
             'amount' => 'required|numeric|min:1|max:' . $maxAllowed,
