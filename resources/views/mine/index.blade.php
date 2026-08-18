@@ -52,6 +52,24 @@
             <div class="flex justify-between text-sm"><span class="text-gray-400">Total Profit</span><span class="font-semibold text-green-400">${{ number_format($totalProfit, 2) }}</span></div>
         </div>
 
+        <!-- Watch & Earn -->
+        <a href="{{ route('tasks.index') }}" >
+            <div class="px-4 py-3 mt-4 bg-gradient-to-r from-blue-600 to-indigo-700 rounded-lg flex items-center justify-between shadow-lg border border-blue-500/30">
+                <div class="flex items-center gap-3">
+                    <div class="bg-white/20 p-2 rounded-full">
+                        <i class="ph-fill ph-play-circle text-3xl text-white"></i>
+                    </div>
+                    <div>
+                        <p class="font-bold text-white text-lg">Watch & Earn</p>
+                        <p class="text-xs text-blue-100">Complete tasks to earn rewards</p>
+                    </div>
+                </div>
+                <div class="bg-white/10 rounded-full p-1">
+                    <i class="ph ph-caret-right text-white text-xl"></i>
+                </div>
+            </div>
+        </a>
+
         <!-- Referral -->
         <a href="{{ route('team.index') }}" >
             <div class="px-4 py-3 mt-4 bg-[#1E1F2B] rounded-lg flex items-center justify-between">
@@ -64,7 +82,6 @@
                 </div>
                 <span class="font-bold text-lg text-yellow-400">${{ number_format($commissionWallet, 2) }}</span>
             </div>
-
         </a>
 
         <!-- Menu List -->
