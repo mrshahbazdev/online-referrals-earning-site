@@ -16,7 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->web(append: [
-            \App\Http\Middleware\VerifyDomainMiddleware::class,
+            //\App\Http\Middleware\VerifyDomainMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
