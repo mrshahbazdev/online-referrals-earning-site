@@ -123,8 +123,8 @@ Route::get('/run-deployment-commands', function () {
     // Database migrate karein
     Artisan::call('migrate', ['--force' => true]);
 
-    // Storage link banayein
-    Artisan::call('storage:link');
+    // Storage link ki ab zaroorat nahi
+    // Artisan::call('storage:link');
 
     // Application key generate karein (agar zaroorat ho)
     // Artisan::call('key:generate', ['--force' => true]);
@@ -201,7 +201,7 @@ Route::get('/create-default-level', function () {
 
 Route::get('/clear-config-cache', function () {
     // Zaroori: Is route ko kaam karne ke baad foran delete kar dein!
-    Artisan::call('storage:link');
+    // Artisan::call('storage:link');
     Artisan::call('config:clear');
     Artisan::call('event:clear');
     Artisan::call('optimize:clear');
