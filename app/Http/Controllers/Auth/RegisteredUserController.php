@@ -60,7 +60,15 @@ class RegisteredUserController extends Controller
             'level_id' => 1,
         ]);
 
-        event(new Registered($user));
+        try {
+            event(new Registered($user));
+        } catch (\Throwable $e) {
+            report($e);
+
+            // Agar email bhejne mein koi masla ho to user ko auto verify kar dein
+            // taake registration complete ho sake.
+            $user->forceFill(['email_verified_at' => now()])->save();
+        }
 
         Auth::login($user);
 
