@@ -17,8 +17,12 @@ class WithdrawalRequest extends Model
     protected $fillable = [
         'user_id',
         'amount',
-        'wallet_address',
+        'method',
+        'account_title',
+        'account_number',
+        'bank_name',
         'status',
+        'reject_reason'
     ];
 
     /**

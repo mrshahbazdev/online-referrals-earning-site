@@ -19,7 +19,10 @@ class WithdrawalController extends Controller
 
     public function update(Request $request, \App\Models\WithdrawalRequest $withdrawalRequest)
     {
-        $request->validate(['status' => 'required|in:approved,rejected']);
+        $request->validate([
+            'status' => 'required|in:approved,rejected',
+            'reject_reason' => 'nullable|string|max:1000',
+        ]);
     
         if ($withdrawalRequest->status !== 'pending') {
             return back()->withErrors('This request has already been processed.');
@@ -27,6 +30,7 @@ class WithdrawalController extends Controller
     
         $user = $withdrawalRequest->user;
         $newStatus = $request->status;
+        $rejectReason = $request->reject_reason;
     
         // **Case 1: Agar request APPROVE ho jaye**
         if ($newStatus == 'approved') {
@@ -50,7 +54,10 @@ class WithdrawalController extends Controller
         }
     
         // Request ka status update karein (chahe approve ho ya reject)
-        $withdrawalRequest->update(['status' => $newStatus]);
+        $withdrawalRequest->update([
+            'status' => $newStatus,
+            'reject_reason' => $newStatus == 'rejected' ? $rejectReason : null,
+        ]);
     
         // Admin ki activity log karein
         \App\Models\AdminActivityLog::create([

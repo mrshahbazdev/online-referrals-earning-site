@@ -35,9 +35,32 @@
                         @error('amount') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
                     </div>
                     <div>
-                        <label for="wallet_address" class="text-sm font-medium text-gray-400">Your Wallet Address</label>
-                        <input type="text" id="wallet_address" name="wallet_address" class="mt-1 w-full bg-[#334155] rounded-lg p-3" required>
-                        @error('wallet_address') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
+                        <div class="mb-4">
+                            <label for="method" class="text-sm font-medium text-gray-400">Withdrawal Method</label>
+                            <select id="method" name="method" class="mt-1 w-full bg-[#334155] rounded-lg p-3 text-white" required>
+                                <option value="" disabled selected>Select a method</option>
+                                <option value="USDT TRC20">USDT TRC20</option>
+                                <option value="JazzCash">JazzCash</option>
+                                <option value="Easypaisa">Easypaisa</option>
+                                <option value="Bank Transfer">Bank Transfer</option>
+                            </select>
+                            @error('method') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
+                        </div>
+                        <div class="mb-4" id="bank_name_container">
+                            <label for="bank_name" class="text-sm font-medium text-gray-400">Bank Name <span class="text-xs">(Only for Bank Transfer)</span></label>
+                            <input type="text" id="bank_name" name="bank_name" class="mt-1 w-full bg-[#334155] rounded-lg p-3 text-white">
+                            @error('bank_name') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
+                        </div>
+                        <div class="mb-4">
+                            <label for="account_title" class="text-sm font-medium text-gray-400">Account Title (Name)</label>
+                            <input type="text" id="account_title" name="account_title" class="mt-1 w-full bg-[#334155] rounded-lg p-3 text-white" required>
+                            @error('account_title') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
+                        </div>
+                        <div class="mb-4">
+                            <label for="account_number" class="text-sm font-medium text-gray-400">Account Number / Wallet Address</label>
+                            <input type="text" id="account_number" name="account_number" class="mt-1 w-full bg-[#334155] rounded-lg p-3 text-white" required>
+                            @error('account_number') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
+                        </div>
                     </div>
                     <button type="submit" class="w-full bg-yellow-400 text-black font-bold py-3 rounded-lg">Submit Request</button>
                 </form>
@@ -56,6 +79,23 @@
 @endsection
 
 @push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const methodSelect = document.getElementById('method');
+    const bankNameContainer = document.getElementById('bank_name_container');
+
+    function toggleBankName() {
+        if (methodSelect.value === 'Bank Transfer') {
+            bankNameContainer.style.display = 'block';
+        } else {
+            bankNameContainer.style.display = 'none';
+        }
+    }
+
+    methodSelect.addEventListener('change', toggleBankName);
+    toggleBankName(); // Initial check
+});
+</script>
 @if(isset($lastWithdrawal))
 <script>
 document.addEventListener('DOMContentLoaded', function() {

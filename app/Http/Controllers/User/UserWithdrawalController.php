@@ -60,7 +60,10 @@ class UserWithdrawalController extends Controller
 
         $request->validate([
             'amount' => 'required|numeric|min:1|max:' . $maxAllowed,
-            'wallet_address' => 'required|string|max:255',
+            'method' => 'required|string|max:50',
+            'account_title' => 'required|string|max:255',
+            'account_number' => 'required|string|max:255',
+            'bank_name' => 'nullable|string|max:255',
         ], [
             'amount.max' => 'The withdrawal amount exceeds your available balance or weekly limit.'
         ]);
@@ -69,7 +72,10 @@ class UserWithdrawalController extends Controller
         WithdrawalRequest::create([
             'user_id' => $user->id,
             'amount' => $request->amount,
-            'wallet_address' => $request->wallet_address,
+            'method' => $request->method,
+            'account_title' => $request->account_title,
+            'account_number' => $request->account_number,
+            'bank_name' => $request->bank_name,
             'status' => 'pending',
         ]);
 

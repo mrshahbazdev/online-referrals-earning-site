@@ -39,32 +39,34 @@
             <tr>
                 <th>User</th>
                 <th>Amount</th>
-                <th>Wallet Address</th>
+                <th>Method</th>
+                <th>Account Details</th>
                 <th>Request Date</th>
                 <th>Status</th>
-                <th>Next Available In</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             @forelse ($requests as $request)
                 <tr>
-                    <td data-label="User">{{ $request->user->username ?? 'N/A' }}</td>
-                    <td data-label="Amount">${{ number_format($request->amount, 2) }}</td>
-                    <td data-label="Wallet Address">{{ $request->wallet_address }}</td>
-                    <td data-label="Request Date">{{ $request->created_at->format('d M, Y') }}</td>
+                    <td data-label="User">
+                        <strong>{{ $request->user->username ?? 'N/A' }}</strong><br>
+                        <span style="font-size: 0.8rem; color: #94a3b8;">Bal: ${{ number_format($request->user->balance ?? 0, 2) }}</span>
+                    </td>
+                    <td data-label="Amount" style="font-weight: bold; color: var(--green);">${{ number_format($request->amount, 2) }}</td>
+                    <td data-label="Method">{{ $request->method ?? 'N/A' }}</td>
+                    <td data-label="Account Details" style="font-size: 0.9rem;">
+                        <strong>Name:</strong> {{ $request->account_title ?? 'N/A' }}<br>
+                        <strong>Number:</strong> {{ $request->account_number ?? $request->wallet_address ?? 'N/A' }}
+                        @if($request->bank_name)
+                            <br><strong>Bank:</strong> {{ $request->bank_name }}
+                        @endif
+                    </td>
+                    <td data-label="Request Date">{{ $request->created_at->format('d M, Y H:i') }}</td>
                     <td data-label="Status">
                         <span class="status-badge status-{{ $request->status }}">{{ $request->status }}</span>
-                    </td>
-                    <td data-label="Next Available In">
-                        @php
-                            // **FIX:** Hafte ke aakhir ke bajaye, request ki date se 7 din aage ki date calculate karein
-                            $nextAvailableDate = \Carbon\Carbon::parse($request->created_at)->addDays(7);
-                        @endphp
-                        @if($nextAvailableDate->isPast())
-                            <span class="text-green-400">Available Now</span>
-                        @else
-                            <div class="countdown-timer text-sm" data-end-date="{{ $nextAvailableDate->toIso8601String() }}"></div>
+                        @if($request->status == 'rejected' && $request->reject_reason)
+                            <div style="font-size: 0.75rem; color: #ef4444; margin-top: 4px;">{{ $request->reject_reason }}</div>
                         @endif
                     </td>
                     <td data-label="Actions">
@@ -76,10 +78,11 @@
                                     <input type="hidden" name="status" value="approved">
                                     <button type="submit" style="background-color: var(--green); color: white;">Approve</button>
                                 </form>
-                                <form action="{{ route('admin.withdrawals.update', $request) }}" method="POST">
+                                <form action="{{ route('admin.withdrawals.update', $request) }}" method="POST" onsubmit="return handleReject(this);">
                                     @csrf
                                     @method('PATCH')
                                     <input type="hidden" name="status" value="rejected">
+                                    <input type="hidden" name="reject_reason" class="reject-reason-input" value="">
                                     <button type="submit" style="background-color: var(--red); color: white;">Reject</button>
                                 </form>
                             </div>
@@ -100,27 +103,13 @@
 
 @push('scripts')
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.countdown-timer').forEach(function(timerElement) {
-        const countdownDate = new Date(timerElement.dataset.endDate).getTime();
-
-        const timerInterval = setInterval(function() {
-            const now = new Date().getTime();
-            const distance = countdownDate - now;
-
-            if (distance < 0) {
-                clearInterval(timerInterval);
-                timerElement.innerHTML = "<span class='text-green-400'>Available Now</span>";
-                return;
-            }
-
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-
-            timerElement.innerHTML = `${days}d ${hours}h ${minutes}m`;
-        }, 1000);
-    });
-});
+function handleReject(form) {
+    let reason = prompt("Please enter a reason for rejecting this withdrawal:");
+    if (reason === null) {
+        return false; // User cancelled
+    }
+    form.querySelector('.reject-reason-input').value = reason;
+    return true;
+}
 </script>
 @endpush
