@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Level;
 use App\Models\Transaction;
 use App\Models\UserActivityLog;
+use App\Models\KycSubmission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -43,9 +44,12 @@ class UserLevelController extends Controller
         $user->save();
         
         // Reject any pending or approved KYC submissions so user has to re-apply
-        \App\Models\KycSubmission::where('user_id', $user->id)
+        // Auto-reject any existing KYC submissions
+        KycSubmission::where('user_id', $user->id)
             ->whereIn('status', ['pending', 'approved'])
-            ->update(['status' => 'rejected', 'rejection_reason' => 'Auto-rejected due to Level Upgrade. Please submit again.']);
+            ->update([
+                'status' => 'rejected'
+            ]);
 
         // Transaction record banayein
         Transaction::create([
