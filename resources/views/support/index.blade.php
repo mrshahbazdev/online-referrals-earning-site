@@ -110,6 +110,15 @@
         flex-shrink: 0;
     }
     .chat-form button:disabled { opacity: 0.6; cursor: not-allowed; }
+    .file-label {
+        display: flex; align-items: center; justify-content: center;
+        width: 42px; height: 42px; background: #334155; border-radius: 50%;
+        color: #f1f5f9; cursor: pointer; flex-shrink: 0;
+    }
+    .file-label:hover { background: #475569; }
+    .chat-image {
+        max-width: 100%; border-radius: 8px; margin-top: 5px; margin-bottom: 5px; display: block;
+    }
     .empty-chat {
         text-align: center;
         color: #94a3b8;
@@ -186,7 +195,12 @@
                     <div class="message {{ $msg->sender }}" data-id="{{ $msg->id }}">
                         <div class="message-bubble">
                             <div class="message-sender">{{ $msg->sender === 'user' ? 'You' : 'Admin' }}</div>
-                            <div class="message-text">{{ $msg->message }}</div>
+                            @if($msg->image_path)
+                                <img src="{{ asset('storage/' . $msg->image_path) }}" class="chat-image" alt="Attachment">
+                            @endif
+                            @if($msg->message)
+                                <div class="message-text">{{ $msg->message }}</div>
+                            @endif
                             <div class="message-meta">
                                 <time>{{ $msg->created_at->format('h:i A') }}</time>
                                 @if ($msg->sender === 'user')
@@ -202,9 +216,13 @@
 
             <div class="typing dots" id="typingIndicator"><span></span><span></span><span></span></div>
 
-            <form class="chat-form" id="chatForm" method="POST" action="{{ route('support.store') }}">
+            <form class="chat-form" id="chatForm" method="POST" action="{{ route('support.store') }}" enctype="multipart/form-data">
                 @csrf
-                <input type="text" id="messageInput" name="message" placeholder="Type your message..." required maxlength="2000" autocomplete="off">
+                <label for="imageInput" class="file-label" title="Attach Image">
+                    <i class="ph ph-paperclip text-xl"></i>
+                    <input type="file" id="imageInput" name="image" accept="image/*" style="display: none;">
+                </label>
+                <input type="text" id="messageInput" name="message" placeholder="Type your message..." maxlength="2000" autocomplete="off">
                 <button type="submit" id="sendButton"><i class="ph ph-paper-plane-right text-xl"></i></button>
             </form>
         </div>
@@ -245,10 +263,14 @@
             ? `<i class="ph ${msg.is_read ? 'ph-checks read' : 'ph-check'} status-icon"></i>`
             : '';
 
+        const imageHtml = msg.image_url ? `<img src="${msg.image_url}" class="chat-image" alt="Attachment">` : '';
+        const textHtml = msg.message ? `<div class="message-text">${escapeHtml(msg.message)}</div>` : '';
+
         wrapper.innerHTML = `
             <div class="message-bubble">
                 <div class="message-sender">${isUser ? 'You' : 'Admin'}</div>
-                <div class="message-text">${escapeHtml(msg.message)}</div>
+                ${imageHtml}
+                ${textHtml}
                 <div class="message-meta">
                     <time>${msg.time}</time>
                     ${statusIcon}
@@ -280,8 +302,9 @@
 
     async function sendMessage(e) {
         e.preventDefault();
+        const imageInput = document.getElementById('imageInput');
         const text = input.value.trim();
-        if (!text) return;
+        if (!text && imageInput.files.length === 0) return;
 
         sendBtn.disabled = true;
         try {
@@ -299,6 +322,7 @@
             const result = await response.json();
             if (response.ok && result.success) {
                 input.value = '';
+                imageInput.value = '';
                 appendMessage(result.data);
             } else {
                 alert('Message send failed. Please try again.');

@@ -26,13 +26,20 @@ class SupportController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'message' => 'required|string|max:2000',
+            'message' => 'required_without:image|nullable|string|max:2000',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
         ]);
+
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('support-images', 'public');
+        }
 
         $message = SupportMessage::create([
             'user_id' => Auth::id(),
             'sender' => 'user',
             'message' => $request->message,
+            'image_path' => $imagePath,
         ]);
 
         if ($request->wantsJson()) {
@@ -70,6 +77,7 @@ class SupportController extends Controller
             'id' => $message->id,
             'sender' => $message->sender,
             'message' => $message->message,
+            'image_url' => $message->image_path ? asset('storage/' . $message->image_path) : null,
             'is_read' => $message->is_read,
             'time' => $message->created_at->format('h:i A'),
             'date' => $message->created_at->isToday()

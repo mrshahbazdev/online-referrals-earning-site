@@ -13,6 +13,7 @@ class SupportMessage extends Model
         'user_id',
         'sender',
         'message',
+        'image_path',
         'is_read',
     ];
 
