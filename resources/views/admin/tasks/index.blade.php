@@ -56,7 +56,7 @@
         </div>
     @endif
 
-    <form id="bulkActionForm" action="{{ route('admin.tasks.bulk-delete') }}" method="POST">
+    <form id="bulkActionForm" action="{{ url('admin/tasks/bulk-delete') }}" method="POST">
         @csrf
         <div style="margin-bottom: 15px; display: flex; gap: 10px; align-items: center;">
             <select name="bulk_action" id="bulk_action" style="padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); background: #334155; color: white;">
