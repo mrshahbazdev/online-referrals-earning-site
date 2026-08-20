@@ -91,6 +91,7 @@ Route::middleware(['auth:admin', 'is_admin'])->prefix('admin')->name('admin.')->
     Route::get('/activity-logs', [ActivityLogController::class, 'index'])->name('activity_logs.index');
     Route::get('/user-activity', [UserActivityController::class, 'index'])->name('user_activity.index');
     Route::resource('levels', LevelController::class)->except(['show', 'create', 'edit']);
+    Route::post('tasks/bulk-delete', [TaskController::class, 'bulkDelete'])->name('tasks.bulk-delete');
     Route::resource('tasks', TaskController::class)->except(['show', 'create', 'edit']);
     Route::get('/kyc-submissions', [KycController::class, 'index'])->name('kyc.index');
     Route::patch('/kyc-submissions/{kycSubmission}', [KycController::class, 'update'])->name('kyc.update');

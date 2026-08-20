@@ -56,30 +56,43 @@
         </div>
     @endif
 
-    <div class="table-container">
-        <table>
-            <thead>
-                <tr>
-                    <th>Title</th><th>Level</th><th>Reward</th><th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($tasks as $task)
+    <form id="bulkActionForm" action="{{ route('admin.tasks.bulk-delete') }}" method="POST">
+        @csrf
+        <div style="margin-bottom: 15px; display: flex; gap: 10px; align-items: center;">
+            <select name="bulk_action" id="bulk_action" style="padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); background: #334155; color: white;">
+                <option value="">Bulk Actions</option>
+                <option value="delete">Delete Selected</option>
+            </select>
+            <button type="button" id="applyBulkAction" class="btn-primary" style="padding: 8px 15px;">Apply</button>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
                     <tr>
-                        <td>{{ $task->title }}</td>
-                        <td>{{ $task->level->name ?? 'N/A' }}</td>
-                        <td>${{ number_format($task->reward_amount, 2) }}</td>
-                        <td>
-                            <button class="action-btn edit-btn" data-task='@json($task)'><i class="ph ph-pencil-simple" style="color: var(--accent-color);"></i></button>
-                            <button class="action-btn delete-btn" data-id="{{ $task->id }}"><i class="ph ph-trash" style="color: var(--red);"></i></button>
-                        </td>
+                        <th style="width: 40px;"><input type="checkbox" id="selectAll"></th>
+                        <th>Title</th><th>Level</th><th>Reward</th><th>Actions</th>
                     </tr>
-                @empty
-                    <tr><td colspan="4" class="text-center p-8">No tasks found.</td></tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                    @forelse ($tasks as $task)
+                        <tr>
+                            <td><input type="checkbox" name="task_ids[]" value="{{ $task->id }}" class="task-checkbox"></td>
+                            <td>{{ $task->title }}</td>
+                            <td>{{ $task->level->name ?? 'N/A' }}</td>
+                            <td>${{ number_format($task->reward_amount, 2) }}</td>
+                            <td>
+                                <button type="button" class="action-btn edit-btn" data-task='@json($task)'><i class="ph ph-pencil-simple" style="color: var(--accent-color);"></i></button>
+                                <button type="button" class="action-btn delete-btn" data-id="{{ $task->id }}"><i class="ph ph-trash" style="color: var(--red);"></i></button>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr><td colspan="5" class="text-center p-8">No tasks found.</td></tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </form>
 
     <div class="pagination-links">
         {{ $tasks->links() }}
@@ -196,6 +209,39 @@ document.addEventListener('DOMContentLoaded', function () {
             deleteModal.classList.remove('active');
         });
     });
+
+    // Bulk Actions logic
+    const selectAllCheckbox = document.getElementById('selectAll');
+    const taskCheckboxes = document.querySelectorAll('.task-checkbox');
+    const applyBulkActionBtn = document.getElementById('applyBulkAction');
+    const bulkActionForm = document.getElementById('bulkActionForm');
+    const bulkActionSelect = document.getElementById('bulk_action');
+
+    if (selectAllCheckbox) {
+        selectAllCheckbox.addEventListener('change', function() {
+            taskCheckboxes.forEach(cb => cb.checked = this.checked);
+        });
+    }
+
+    if (applyBulkActionBtn) {
+        applyBulkActionBtn.addEventListener('click', function() {
+            const selectedAction = bulkActionSelect.value;
+            const checkedCount = document.querySelectorAll('.task-checkbox:checked').length;
+
+            if (checkedCount === 0) {
+                alert('Please select at least one task.');
+                return;
+            }
+
+            if (selectedAction === 'delete') {
+                if (confirm('Are you sure you want to delete the selected tasks?')) {
+                    bulkActionForm.submit();
+                }
+            } else {
+                alert('Please select a valid bulk action.');
+            }
+        });
+    }
 });
 </script>
 @endpush

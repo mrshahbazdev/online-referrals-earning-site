@@ -78,4 +78,24 @@ class TaskController extends Controller
 
         return back()->with('success', 'Task deleted successfully.');
     }
+
+    public function bulkDelete(Request $request)
+    {
+        $request->validate([
+            'task_ids' => 'required|array',
+            'task_ids.*' => 'exists:tasks,id',
+        ]);
+
+        $count = count($request->task_ids);
+        Task::whereIn('id', $request->task_ids)->delete();
+
+        AdminActivityLog::create([
+            'admin_id' => Auth::id(),
+            'log_type' => 'Task Management',
+            'action' => 'Bulk Task Deleted',
+            'description' => 'Admin deleted ' . $count . ' tasks in bulk.',
+        ]);
+
+        return back()->with('success', $count . ' tasks deleted successfully.');
+    }
 }
