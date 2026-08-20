@@ -28,7 +28,16 @@
     </style>
 @endpush
 @section('content')
-            <header class="main-header"><h1>KYC Submissions</h1></header>
+            <header class="main-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+                <h1>KYC Submissions</h1>
+                <form action="{{ route('admin.kyc.index') }}" method="GET" style="display: flex; gap: 10px;">
+                    <input type="text" name="search" value="{{ $search ?? '' }}" placeholder="Search user, name, ID..." style="padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-color); background: #334155; color: white;">
+                    <button type="submit" style="padding: 8px 15px; border-radius: 8px; background: var(--accent-color); color: var(--bg-dark); font-weight: 600; border: none; cursor: pointer;">Search</button>
+                    @if(!empty($search))
+                        <a href="{{ route('admin.kyc.index') }}" style="padding: 8px 15px; border-radius: 8px; background: var(--border-color); color: white; text-decoration: none; font-weight: 600; display: flex; align-items: center;">Clear</a>
+                    @endif
+                </form>
+            </header>
 
             @if (session('success'))
                 <div class="alert alert-success">{{ session('success') }}</div>
@@ -82,7 +91,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="pagination-links">{{ $submissions->links() }}</div>
+            <div class="pagination-links" style="margin-top: 15px;">{{ $submissions->withQueryString()->links() }}</div>
         </main>
     </div>
 @endsection

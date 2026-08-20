@@ -10,10 +10,21 @@ use App\Models\AdminActivityLog;
 
 class KycController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $submissions = KycSubmission::with('user')->latest()->paginate(10);
-        return view('admin.kyc.index', compact('submissions'));
+        $search = $request->input('search');
+        $query = KycSubmission::with('user')->latest();
+
+        if ($search) {
+            $query->whereHas('user', function($q) use ($search) {
+                $q->where('username', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+            })->orWhere('full_name', 'like', "%{$search}%")
+              ->orWhere('id_number', 'like', "%{$search}%");
+        }
+
+        $submissions = $query->paginate(10);
+        return view('admin.kyc.index', compact('submissions', 'search'));
     }
 
     public function update(Request $request, KycSubmission $kycSubmission)
