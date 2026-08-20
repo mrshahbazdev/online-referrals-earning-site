@@ -19,9 +19,18 @@
 @endpush
 
 @section('content')
-    <header class="main-header">
-        <button class="mobile-nav-toggle" id="mobileNavToggle"><i class="ph ph-list"></i></button>
-        <h1>Withdrawal Requests</h1>
+    <header class="main-header" style="flex-wrap: wrap; gap: 15px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <button class="mobile-nav-toggle" id="mobileNavToggle"><i class="ph ph-list"></i></button>
+            <h1>Withdrawal Requests</h1>
+        </div>
+        <form action="{{ route('admin.withdrawals.index') }}" method="GET" style="display: flex; gap: 10px;">
+            <input type="text" name="search" value="{{ $search ?? '' }}" placeholder="Search username, method, acc..." style="padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-color); background: #334155; color: white;">
+            <button type="submit" style="padding: 8px 15px; border-radius: 8px; background: var(--accent-color); color: var(--bg-dark); font-weight: 600; border: none; cursor: pointer;">Search</button>
+            @if(!empty($search))
+                <a href="{{ route('admin.withdrawals.index') }}" style="padding: 8px 15px; border-radius: 8px; background: var(--border-color); color: white; text-decoration: none; font-weight: 600; display: flex; align-items: center;">Clear</a>
+            @endif
+        </form>
     </header>
 
     @if (session('success'))
@@ -98,7 +107,7 @@
     </table>
 </div>
 
-    <div class="pagination-links">{{ $requests->links() }}</div>
+    <div class="pagination-links" style="margin-top: 15px;">{{ $requests->withQueryString()->links() }}</div>
 @endsection
 
 @push('scripts')

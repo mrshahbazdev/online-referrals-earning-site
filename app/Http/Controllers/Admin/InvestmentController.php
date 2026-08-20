@@ -11,10 +11,21 @@ use App\Models\AdminActivityLog;
 
 class InvestmentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $requests = InvestmentRequest::with('user')->latest()->paginate(10);
-        return view('admin.investments.index', compact('requests'));
+        $search = $request->input('search');
+        $query = InvestmentRequest::with('user')->latest();
+
+        if ($search) {
+            $query->whereHas('user', function($q) use ($search) {
+                $q->where('username', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+            })->orWhere('transaction_id', 'like', "%{$search}%")
+              ->orWhere('id', 'like', "%{$search}%");
+        }
+
+        $requests = $query->paginate(10);
+        return view('admin.investments.index', compact('requests', 'search'));
     }
 
     public function update(Request $request, \App\Models\InvestmentRequest $investmentRequest)

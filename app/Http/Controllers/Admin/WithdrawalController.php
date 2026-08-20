@@ -11,10 +11,22 @@ use App\Models\AdminActivityLog;
 
 class WithdrawalController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $requests = WithdrawalRequest::with('user')->latest()->paginate(10);
-        return view('admin.withdrawals.index', compact('requests'));
+        $search = $request->input('search');
+        $query = WithdrawalRequest::with('user')->latest();
+
+        if ($search) {
+            $query->whereHas('user', function($q) use ($search) {
+                $q->where('username', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+            })->orWhere('method', 'like', "%{$search}%")
+              ->orWhere('account_number', 'like', "%{$search}%")
+              ->orWhere('account_title', 'like', "%{$search}%");
+        }
+
+        $requests = $query->paginate(10);
+        return view('admin.withdrawals.index', compact('requests', 'search'));
     }
 
     public function update(Request $request, \App\Models\WithdrawalRequest $withdrawalRequest)
