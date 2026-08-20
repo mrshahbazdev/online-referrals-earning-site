@@ -9,20 +9,37 @@ use Illuminate\Http\Request;
 
 class SupportController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::where('role', 'user')
+        $search = $request->input('search');
+
+        $usersQuery = User::where('role', 'user')
             ->whereHas('supportMessages')
             ->withCount(['supportMessages as unread_count' => function ($query) {
                 $query->where('sender', 'user')->where('is_read', false);
             }])
             ->with(['supportMessages' => function ($query) {
                 $query->latest()->limit(1);
-            }])
-            ->latest()
-            ->paginate(20);
+            }]);
 
-        return view('admin.support.index', compact('users'));
+        if ($search) {
+            $usersQuery->where(function ($q) use ($search) {
+                $q->where('username', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%")
+                  ->orWhere('phone_number', 'like', "%{$search}%");
+            });
+        }
+
+        $users = $usersQuery->addSelect(['last_message_at' => SupportMessage::select('created_at')
+            ->whereColumn('user_id', 'users.id')
+            ->latest()
+            ->limit(1)
+        ])
+        ->orderBy('unread_count', 'desc')
+        ->orderBy('last_message_at', 'desc')
+        ->paginate(20);
+
+        return view('admin.support.index', compact('users', 'search'));
     }
 
     public function show(User $user)

@@ -33,8 +33,18 @@
 
 @section('content')
     <main class="main-content">
-        <header class="main-header">
-            <h1>Support Chats</h1>
+        <header class="main-header" style="flex-wrap: wrap; gap: 15px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <button class="mobile-nav-toggle" id="mobileNavToggle"><i class="ph ph-list"></i></button>
+                <h1>Support Chats</h1>
+            </div>
+            <form action="{{ route('admin.support.index') }}" method="GET" style="display: flex; gap: 10px;">
+                <input type="text" name="search" value="{{ $search ?? '' }}" placeholder="Search username, email..." style="padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-color); background: #334155; color: white;">
+                <button type="submit" style="padding: 8px 15px; border-radius: 8px; background: var(--accent-color); color: var(--bg-dark); font-weight: 600; border: none; cursor: pointer;">Search</button>
+                @if(!empty($search))
+                    <a href="{{ route('admin.support.index') }}" style="padding: 8px 15px; border-radius: 8px; background: var(--border-color); color: white; text-decoration: none; font-weight: 600; display: flex; align-items: center;">Clear</a>
+                @endif
+            </form>
         </header>
 
         @if (session('success'))
@@ -69,7 +79,9 @@
             @endforelse
         </div>
 
-        <div class="pagination-links">{{ $users->links() }}</div>
+        <div style="margin-top: 1.5rem;">
+            {{ $users->withQueryString()->links() }}
+        </div>
     </main>
 @endsection
 
