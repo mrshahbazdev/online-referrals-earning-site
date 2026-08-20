@@ -13,6 +13,16 @@ if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php'))
 // Register the Composer autoloader...
 require __DIR__.'/../vendor/autoload.php';
 
+// TEMPORARY: Clear route cache to fix the error
+try {
+    if (file_exists(__DIR__.'/../bootstrap/cache/routes-v7.php')) {
+        unlink(__DIR__.'/../bootstrap/cache/routes-v7.php');
+    }
+    if (file_exists(__DIR__.'/../bootstrap/cache/routes.php')) {
+        unlink(__DIR__.'/../bootstrap/cache/routes.php');
+    }
+} catch (\Exception $e) {}
+
 // Bootstrap Laravel and handle the request...
 /** @var Application $app */
 $app = require_once __DIR__.'/../bootstrap/app.php';
