@@ -279,7 +279,7 @@
                                 </div>
                                 <div class="form-group flex items-center h-full pt-4 sm:col-span-2 lg:col-span-3">
                                     <label class="flex items-center space-x-3 cursor-pointer">
-                                        <input type="checkbox" id="bypass_referral_requirement" name="bypass_referral_requirement" class="w-5 h-5 text-yellow-400 bg-[#1E1F2B] border-gray-700 rounded focus:ring-yellow-400 focus:ring-2">
+                                        <input type="checkbox" id="bypass_referral_requirement" name="bypass_referral_requirement" value="1" class="w-5 h-5 text-yellow-400 bg-[#1E1F2B] border-gray-700 rounded focus:ring-yellow-400 focus:ring-2">
                                         <span class="text-gray-300 font-medium">Bypass Next Withdrawal Referral Requirement completely</span>
                                     </label>
                                 </div>
